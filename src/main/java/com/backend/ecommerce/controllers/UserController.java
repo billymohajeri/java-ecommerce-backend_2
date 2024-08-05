@@ -1,8 +1,10 @@
 package com.backend.ecommerce.controllers;
 
+import com.backend.ecommerce.dtos.UserLoginDTO;
 import com.backend.ecommerce.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,7 +15,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/login")
-    public void loginUser() {
-        userService.loginUser();
+    public void loginUser(@RequestBody UserLoginDTO userLoginDTO) {
+        userService.loginUser(userLoginDTO);
     }
 }
