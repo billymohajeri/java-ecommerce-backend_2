@@ -7,5 +7,4 @@ import lombok.Getter;
 public class UserLoginDTO {
     private String email;
     private String password;
-    private AuthenticationRole role;
 }

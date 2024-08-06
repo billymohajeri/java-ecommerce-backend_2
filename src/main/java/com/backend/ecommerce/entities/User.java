@@ -36,4 +36,5 @@ public class User {
     @Column(name = "birth_date")
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date birthDate;
+    private String role;
 }
