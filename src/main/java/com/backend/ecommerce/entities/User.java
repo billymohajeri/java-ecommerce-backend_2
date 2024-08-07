@@ -1,5 +1,6 @@
 package com.backend.ecommerce.entities;
 
+import com.backend.ecommerce.services.utilities.Constants;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -34,7 +36,7 @@ public class User {
     @Column(name = "phone")
     private String phoneNumber;
     @Column(name = "birth_date")
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
-    private Date birthDate;
+    @DateTimeFormat(pattern = Constants.SERVER_DATE_FORMAT)
+    private LocalDate birthDate;
     private String role;
 }

@@ -1,6 +1,7 @@
 package com.backend.ecommerce.controllers;
 
-import com.backend.ecommerce.services.dtos.UserLoginDTO;
+import com.backend.ecommerce.services.dtos.UserDto;
+import com.backend.ecommerce.services.dtos.UserLoginDto;
 import com.backend.ecommerce.entities.User;
 import com.backend.ecommerce.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/login")
-    public void loginUser(@RequestBody UserLoginDTO userLoginDTO) {
+    public void loginUser(@RequestBody UserLoginDto userLoginDTO) {
         userService.loginUser(userLoginDTO);
     }
 
@@ -28,35 +29,29 @@ public class UserController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserDto>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable String id) {
-        Optional<User> user = userService.getUserById(UUID.fromString(id));
+    public ResponseEntity<UserDto> getUserById(@PathVariable String id) {
+        Optional<UserDto> user = userService.getUserById(UUID.fromString(id));
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
-        return ResponseEntity.ok(userService.register(user));
-    }
-
-    @PostMapping("/admin/create")
-    public ResponseEntity<User> addUser(@RequestBody User user) {
-        return ResponseEntity.ok(userService.addUser(user));
+    public ResponseEntity<User> registerUser(@RequestBody UserDto userDto) {
+        return ResponseEntity.ok(userService.register(userDto));
     }
 
     @PutMapping("")
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
-        return ResponseEntity.ok(userService.updateUser(user));
+    public ResponseEntity<User> updateUser(@RequestBody UserDto userDto) {
+        return ResponseEntity.ok(userService.updateUser(userDto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable String id) {
         //TODO: validate UUID
-        Optional<User> user = userService.deleteUser(UUID.fromString(id));
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(userService.deleteUser(UUID.fromString(id)));
     }
 }
