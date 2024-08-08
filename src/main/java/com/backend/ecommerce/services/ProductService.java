@@ -34,13 +34,14 @@ public class ProductService {
     return product;
   }
 
-  public Optional<Product> deleteProduct(UUID id) {
-    Optional<Product> findProduct = productJpaRepo.findById(id);
+  public Product deleteProduct(UUID id) {
+    Optional<Product> findProduct = getProductById(id);
     if (findProduct.isPresent()) {
-      productJpaRepo.delete(findProduct.get());
-      return findProduct;
+      Product deletedProduct = findProduct.get();
+      productJpaRepo.delete(deletedProduct);
+      return deletedProduct;
     }
-    return Optional.empty();
+    return null;
   }
 
 //  public Product patchProductStock(Product product){
