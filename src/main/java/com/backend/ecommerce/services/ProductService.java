@@ -44,10 +44,14 @@ public class ProductService {
     return null;
   }
 
-//  public Product patchProductStock(Product product){
-//    Optional<Product> findProduct = productJpaRepo.findById(product.getId());
-//    if(findProduct.isPresent()){
-//      productJpaRepo.
-//    }
-//  }
+  public Product patchProductStock(UUID id, int stock) {
+    Optional<Product> findProduct = productJpaRepo.findById(id);
+    if (findProduct.isPresent()) {
+      Product patchedProduct = findProduct.get();
+      patchedProduct.setStock(stock);
+      productJpaRepo.save(patchedProduct);
+      return patchedProduct;
+    }
+    return null;
+  }
 }

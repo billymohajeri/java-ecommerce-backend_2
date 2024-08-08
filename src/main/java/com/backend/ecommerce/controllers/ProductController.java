@@ -42,4 +42,11 @@ public class ProductController {
   public ResponseEntity<Product> deleteProduct(@PathVariable UUID id) {
     return ResponseEntity.ok(productService.deleteProduct(id));
   }
+
+  @PatchMapping("/{id}")
+  public ResponseEntity<Product> patchProductStock(@PathVariable UUID id, @RequestBody int stock) {
+    return ResponseEntity.ok(productService.patchProductStock(id, stock));
+  }
+
+
 }
