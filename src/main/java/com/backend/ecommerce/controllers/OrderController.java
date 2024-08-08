@@ -1,6 +1,5 @@
 package com.backend.ecommerce.controllers;
 
-import com.backend.ecommerce.entities.Order;
 import com.backend.ecommerce.services.OrderService;
 import com.backend.ecommerce.services.dtos.OrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +34,21 @@ public class OrderController {
     public ResponseEntity<List<OrderDto>> getAllOrders(){
         List<OrderDto> orders = orderService.getAllOrders();
         return ResponseEntity.ok(orders);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<OrderDto> updateOrder(@PathVariable UUID id, @RequestBody OrderDto orderDto){
+        try{
+            OrderDto updatedOrder = orderService.updateOrder(id, orderDto);
+            return ResponseEntity.ok(updatedOrder);
+        }catch (RuntimeException e){
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<OrderDto> deleteOrder(@PathVariable UUID id){
+        orderService.deleteOrder(id);
+        return ResponseEntity.noContent().build();
     }
 }

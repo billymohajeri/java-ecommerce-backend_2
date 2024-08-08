@@ -33,4 +33,20 @@ public class OrderService {
         List<Order> orders = orderJpaRepo.findAll();
         return orderMapper.toOrderDtos(orders);
     }
+
+    public OrderDto updateOrder(UUID id, OrderDto orderDto){
+        return orderJpaRepo.findById(id)
+                .map(order -> {
+                    order.setDateTime(orderDto.dateTime());
+                    order.setAddress(orderDto.address());
+                    order.setComments(orderDto.comments());
+                    order.setStatus(orderDto.status());
+                    Order updatedOrder = orderJpaRepo.save(order);
+                    return orderMapper.toOrderDto(updatedOrder);
+                }).orElseThrow(() -> new RuntimeException("Order not found!"));
+    }
+
+    public void deleteOrder(UUID id){
+        orderJpaRepo.deleteById(id);
+    }
 }
