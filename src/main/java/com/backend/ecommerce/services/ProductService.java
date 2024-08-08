@@ -42,4 +42,11 @@ public class ProductService {
     }
     return Optional.empty();
   }
+
+//  public Product patchProductStock(Product product){
+//    Optional<Product> findProduct = productJpaRepo.findById(product.getId());
+//    if(findProduct.isPresent()){
+//      productJpaRepo.
+//    }
+//  }
 }
