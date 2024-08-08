@@ -17,16 +17,16 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Product {
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @Column(name = "name")
+  @Column(name = "name", nullable = false, columnDefinition = "VARCHAR(100)")
   private String name;
 
-  @Column(name = "price")
+  @Column(name = "price", nullable = false, columnDefinition = "NUMERIC(10,2)")
   private double price;
 
-  @Column(name = "description")
+  @Column(name = "description", columnDefinition = "TEXT")
   private String description;
 
   @ElementCollection
@@ -34,16 +34,15 @@ public class Product {
   @Column(name = "image")
   private List<String> images;
 
-  @Column(name = "color")
+  @Column(name = "color", nullable = false, columnDefinition = "VARCHAR(50)")
   private String color;
 
-  //  @Type(type = "jsonb")
-  //  @Column(name = "meta", columnDefinition = "jsonb")
-  //  private Map<String, Object> meta;
+  @Column(name = "meta")
+  private String meta;
 
-  @Column(name = "rating")
+  @Column(name = "rating", columnDefinition = "NUMERIC(2,1)")
   private float rating;
 
-  @Column(name = "stock")
+  @Column(name = "stock", columnDefinition = "INTEGER")
   private int stock;
 }

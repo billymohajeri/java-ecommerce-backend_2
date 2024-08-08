@@ -34,7 +34,8 @@ public class ProductController {
 
   @PutMapping("")
   public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
-    return ResponseEntity.ok(productService.updateProduct(product));
+    productService.updateProduct(product);
+    return ResponseEntity.ok(product);
   }
 
   @DeleteMapping("/{id}")

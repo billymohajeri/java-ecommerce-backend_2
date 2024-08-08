@@ -27,7 +27,7 @@ public class ProductService {
   }
 
   public Product updateProduct(Product product) {
-    Optional<Product> findProduct = productJpaRepo.findById(product.getId());
+    Optional<Product> findProduct = productJpaRepo.findById((product.getId()));
     if (findProduct.isPresent()) {
       return productJpaRepo.save(product);
     }
