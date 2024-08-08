@@ -1,5 +1,6 @@
 package com.backend.ecommerce.entities;
 
+import com.backend.ecommerce.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,8 +33,9 @@ public class Order {
     @Column(name = "comments")
     private String comments;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private Integer status;
+    private OrderStatus status;
 
     @Column(name = "address")
     private String address;
