@@ -1,14 +1,15 @@
 package com.backend.ecommerce.entities;
 
+import com.backend.ecommerce.entities.enums.AuthenticationRole;
+import com.backend.ecommerce.services.utilities.Constants;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -19,22 +20,23 @@ import java.util.UUID;
 @AllArgsConstructor
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false, columnDefinition = "varchar(50)")
     private String firstName;
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false, columnDefinition = "varchar(50)")
     private String lastName;
     @Column(name = "address")
     private String address;
-    @Column(name = "email")
+    @Column(name = "email", nullable = false, unique = true, columnDefinition = "varchar(70)")
     private String email;
-    @Column(name = "password")
+    @Column(name = "password", columnDefinition = "varchar(15)")
     private String password;
-    @Column(name = "phone")
+    @Column(name = "phone", unique = true)
     private String phoneNumber;
     @Column(name = "birth_date")
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
-    private Date birthDate;
-    private String role;
+    @DateTimeFormat(pattern = Constants.SERVER_DATE_FORMAT)
+    private LocalDate birthDate;
+    @Enumerated(EnumType.STRING)
+    private AuthenticationRole role;
 }
