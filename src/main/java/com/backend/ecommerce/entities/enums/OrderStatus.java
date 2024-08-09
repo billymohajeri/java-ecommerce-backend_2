@@ -1,5 +1,8 @@
 package com.backend.ecommerce.entities.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum OrderStatus {
     PENDING(1),
     SHIPPED(2),
@@ -9,10 +12,6 @@ public enum OrderStatus {
 
     OrderStatus(int code) {
         this.code = code;
-    }
-
-    public int getCode() {
-        return code;
     }
 
     public static OrderStatus fromCode(int code) {

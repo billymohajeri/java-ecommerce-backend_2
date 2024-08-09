@@ -2,6 +2,7 @@ package com.backend.ecommerce.controllers;
 
 import com.backend.ecommerce.services.OrderService;
 import com.backend.ecommerce.services.dtos.OrderDto;
+import com.backend.ecommerce.services.dtos.OrderUpdateDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<OrderDto> updateOrder(@PathVariable UUID id, @RequestBody OrderDto orderDto){
+    public ResponseEntity<OrderDto> updateOrder(@PathVariable UUID id, @RequestBody OrderUpdateDto orderDto){
         try{
             OrderDto updatedOrder = orderService.updateOrder(id, orderDto);
             return ResponseEntity.ok(updatedOrder);

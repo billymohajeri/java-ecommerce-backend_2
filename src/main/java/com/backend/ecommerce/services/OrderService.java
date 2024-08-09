@@ -3,6 +3,7 @@ package com.backend.ecommerce.services;
 import com.backend.ecommerce.entities.Order;
 import com.backend.ecommerce.repositories.OrderJpaRepo;
 import com.backend.ecommerce.services.dtos.OrderDto;
+import com.backend.ecommerce.services.dtos.OrderUpdateDto;
 import com.backend.ecommerce.services.mappers.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,10 +35,9 @@ public class OrderService {
         return orderMapper.toOrderDtos(orders);
     }
 
-    public OrderDto updateOrder(UUID id, OrderDto orderDto){
+    public OrderDto updateOrder(UUID id, OrderUpdateDto orderDto){
         return orderJpaRepo.findById(id)
                 .map(order -> {
-                    order.setDateTime(orderDto.dateTime());
                     order.setAddress(orderDto.address());
                     order.setComments(orderDto.comments());
                     order.setStatus(orderDto.status());
