@@ -5,7 +5,9 @@ import com.backend.ecommerce.services.dtos.UserLoginDto;
 import com.backend.ecommerce.entities.User;
 import com.backend.ecommerce.repositories.UserJpaRepo;
 import com.backend.ecommerce.services.mappers.UserMapper;
+import com.backend.ecommerce.shared.exception.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +23,22 @@ public class UserService {
     UserMapper userMapper;
 
     public void loginUser(UserLoginDto userLoginDTO) {
-        //TODO: implement
-        System.out.println(userLoginDTO.email());
+        if (userLoginDTO.password().isEmpty()) {
+            throw new CustomException("Password cannot be empty", HttpStatus.BAD_REQUEST.value());
+        }
+
+        boolean userExists = checkUserExists(userLoginDTO.email());
+
+        if (!userExists) {
+            throw new CustomException("User does not exist", 123);
+        }
+
+        // TODO: Implement the rest
+    }
+
+    private boolean checkUserExists(String email) {
+        // Implement logic to check if the user exists in the database
+        return false; // For demonstration purposes
     }
 
     public List<UserDto> getAllUsers() {
@@ -39,7 +55,7 @@ public class UserService {
 
     public User updateUser(UserDto userDto) {
         //TODO: Perform validations
-        Optional<User> find = userJpaRepo.findById(UUID.fromString(userDto.id()));
+        Optional<User> find = userJpaRepo.findById(userDto.id());
         if (find.isPresent()) {
             User user = userMapper.toUser(userDto);
             return userJpaRepo.save(user);
