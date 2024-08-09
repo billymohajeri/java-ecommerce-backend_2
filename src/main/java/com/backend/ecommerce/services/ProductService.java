@@ -39,7 +39,7 @@ public class ProductService {
     if (findProduct.isPresent()) {
       Product deletedProduct = findProduct.get();
       productJpaRepo.delete(deletedProduct);
-      return deletedProduct;
+//      return deletedProduct;
     }
     return null;
   }
