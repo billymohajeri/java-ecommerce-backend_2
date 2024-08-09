@@ -16,12 +16,12 @@ public class ProductController {
   @Autowired
   private ProductService productService;
 
-  @PostMapping("")
+  @PostMapping
   public ResponseEntity<Product> createProduct(@RequestBody Product product) {
     return ResponseEntity.ok(productService.createProduct(product));
   }
 
-  @GetMapping("")
+  @GetMapping
   public ResponseEntity<List<Product>> getAllProducts() {
     return ResponseEntity.ok(productService.getAllProducts());
   }
@@ -32,7 +32,7 @@ public class ProductController {
     return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
   }
 
-  @PutMapping("")
+  @PutMapping
   public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
     productService.updateProduct(product);
     return ResponseEntity.ok(product);
