@@ -6,6 +6,7 @@ import com.backend.ecommerce.entities.User;
 import com.backend.ecommerce.repositories.UserJpaRepo;
 import com.backend.ecommerce.services.mappers.UserMapper;
 import com.backend.ecommerce.shared.exception.CustomException;
+import com.backend.ecommerce.shared.exception.ErrorConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,20 +25,20 @@ public class UserService {
 
     public void loginUser(UserLoginDto userLoginDTO) {
         if (userLoginDTO.password().isEmpty()) {
-            throw new CustomException("Password cannot be empty", HttpStatus.BAD_REQUEST.value());
+            throw new CustomException(ErrorConstants.ErrorMessage.PASSWORD_NOT_EMPTY, HttpStatus.BAD_REQUEST.value());
         }
 
         boolean userExists = checkUserExists(userLoginDTO.email());
 
         if (!userExists) {
-            throw new CustomException("User does not exist", 123);
+            throw new CustomException(ErrorConstants.ErrorMessage.USER_DOES_NOT_EXIST, ErrorConstants.ErrorCode.USER_DOES_NOT_EXIST);
         }
 
         // TODO: Implement the rest
     }
 
     private boolean checkUserExists(String email) {
-        // Implement logic to check if the user exists in the database
+        // TODO: Implement logic to check if the user exists in the database
         return false; // For demonstration purposes
     }
 
