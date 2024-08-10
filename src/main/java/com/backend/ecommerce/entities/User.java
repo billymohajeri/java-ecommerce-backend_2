@@ -1,7 +1,7 @@
 package com.backend.ecommerce.entities;
 
 import com.backend.ecommerce.entities.enums.AuthenticationRole;
-import com.backend.ecommerce.services.utilities.Constants;
+import com.backend.ecommerce.shared.utilities.Constants;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

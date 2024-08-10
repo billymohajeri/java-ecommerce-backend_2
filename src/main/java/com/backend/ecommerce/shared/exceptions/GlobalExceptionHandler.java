@@ -1,4 +1,4 @@
-package com.backend.ecommerce.shared.exception;
+package com.backend.ecommerce.shared.exceptions;
 
 import com.backend.ecommerce.shared.response.GlobalResponse;
 import org.springframework.http.HttpStatus;

@@ -1,12 +1,13 @@
-package com.backend.ecommerce.services.mappers;
+package com.backend.ecommerce.mappers;
 
+import com.backend.ecommerce.dtos.cart.CartResponseDto;
 import com.backend.ecommerce.entities.Cart;
-import com.backend.ecommerce.services.dtos.CartDto;
+import com.backend.ecommerce.dtos.cart.CartDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.FIELD, uses = UserMapper.class)
+@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.FIELD)
 public interface CartMapper {
 
     @Mapping(target = "user.id", source = "userId")
@@ -14,5 +15,7 @@ public interface CartMapper {
 
     @Mapping(target = "userId", source = "user.id")
     CartDto toCartDto(Cart source);
+
+    CartResponseDto toCartResponseDto(Cart source);
 
 }
