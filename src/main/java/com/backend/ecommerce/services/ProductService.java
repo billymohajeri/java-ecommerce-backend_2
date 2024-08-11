@@ -2,6 +2,7 @@ package com.backend.ecommerce.services;
 
 import com.backend.ecommerce.entities.Product;
 import com.backend.ecommerce.repositories.ProductJpaRepo;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,11 +36,12 @@ public class ProductService {
   }
 
   public Product deleteProduct(UUID id) {
-    Optional<Product> findProduct = getProductById(id);
+    Optional<Product> findProduct = productJpaRepo.findById(id);
     if (findProduct.isPresent()) {
       Product deletedProduct = findProduct.get();
+      Hibernate.initialize(deletedProduct.getImages());
       productJpaRepo.delete(deletedProduct);
-//      return deletedProduct;
+      return deletedProduct;
     }
     return null;
   }
