@@ -2,6 +2,7 @@ package com.backend.ecommerce.services;
 
 import com.backend.ecommerce.entities.Product;
 import com.backend.ecommerce.repositories.ProductJpaRepo;
+import com.backend.ecommerce.services.interfaces.ProductService;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,9 +12,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class ProductServiceImpl {
+public class ProductServiceImpl implements ProductService {
+
   @Autowired
-  ProductJpaRepo productJpaRepo;
+  private ProductJpaRepo productJpaRepo;
 
   public Product createProduct(Product product) {
     return productJpaRepo.save(product);
