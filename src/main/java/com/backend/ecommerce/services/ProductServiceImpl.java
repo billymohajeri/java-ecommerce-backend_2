@@ -6,7 +6,6 @@ import com.backend.ecommerce.mappers.ProductMapper;
 import com.backend.ecommerce.repositories.ProductJpaRepo;
 import com.backend.ecommerce.services.interfaces.ProductService;
 import com.backend.ecommerce.shared.exceptions.ErrorConstants;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,33 +41,38 @@ public class ProductServiceImpl implements ProductService {
                             ErrorConstants.ErrorMessage.PRODUCT_DOES_NOT_EXIST)));
   }
 
-  public Product updateProduct(Product product) {
-    Optional<Product> findProduct = productJpaRepo.findById((product.getId()));
-    if (findProduct.isPresent()) {
-      return productJpaRepo.save(product);
-    }
-    return product;
+  public ProductDto updateProduct(ProductDto productDto) {
+    Optional<ProductDto> findProductDto = getProductById(productDto.id());
+    return findProductDto.map(dto -> {
+      Product updatedProduct = productMapper.toProduct(dto);
+      updatedProduct.setName(productDto.name());
+      updatedProduct.setPrice(productDto.price());
+      updatedProduct.setDescription(productDto.description());
+      updatedProduct.setImages(productDto.images());
+      updatedProduct.setColor(productDto.color());
+      updatedProduct.setRating(productDto.rating());
+      updatedProduct.setStock(productDto.stock());
+      Product newProduct = productJpaRepo.save(updatedProduct);
+      return productMapper.toProductDto(newProduct);
+    }).orElseThrow();
   }
 
-  public Product deleteProduct(UUID id) {
-    Optional<Product> findProduct = productJpaRepo.findById(id);
-    if (findProduct.isPresent()) {
-      Product deletedProduct = findProduct.get();
-      Hibernate.initialize(deletedProduct.getImages());
+  public ProductDto deleteProduct(UUID id) {
+    Optional<ProductDto> findProductDto = getProductById(id);
+    return findProductDto.map(dto -> {
+      Product deletedProduct = productMapper.toProduct(dto);
       productJpaRepo.delete(deletedProduct);
-      return deletedProduct;
-    }
-    return null;
+      return dto;
+    }).orElseThrow();
   }
 
-  public Product patchProductStock(UUID id, int stock) {
-    Optional<Product> findProduct = productJpaRepo.findById(id);
-    if (findProduct.isPresent()) {
-      Product patchedProduct = findProduct.get();
+  public ProductDto patchProductStock(UUID id, int stock) {
+    Optional<ProductDto> findProductDto = getProductById(id);
+    return findProductDto.map(dto -> {
+      Product patchedProduct = productMapper.toProduct(dto);
       patchedProduct.setStock(stock);
       productJpaRepo.save(patchedProduct);
-      return patchedProduct;
-    }
-    return null;
+      return productMapper.toProductDto(patchedProduct);
+    }).orElseThrow();
   }
 }

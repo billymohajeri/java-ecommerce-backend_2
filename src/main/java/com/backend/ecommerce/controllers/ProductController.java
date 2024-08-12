@@ -1,7 +1,6 @@
 package com.backend.ecommerce.controllers;
 
 import com.backend.ecommerce.dtos.ProductDto;
-import com.backend.ecommerce.entities.Product;
 import com.backend.ecommerce.services.ProductServiceImpl;
 import com.backend.ecommerce.shared.response.GlobalResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,19 +37,20 @@ public class ProductController {
   }
 
   @PutMapping
-  public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
-    productServiceImpl.updateProduct(product);
-    return ResponseEntity.ok(product);
+  public ResponseEntity<GlobalResponse<ProductDto>> updateProduct(@RequestBody ProductDto productDto) {
+    return ResponseEntity.ok(new GlobalResponse<>(productServiceImpl.updateProduct(productDto), null));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Product> deleteProduct(@PathVariable UUID id) {
-    return ResponseEntity.ok(productServiceImpl.deleteProduct(id));
+  public ResponseEntity<GlobalResponse<ProductDto>> deleteProduct(@PathVariable UUID id) {
+    GlobalResponse<ProductDto> response = new GlobalResponse<>(productServiceImpl.deleteProduct(id), null);
+    return ResponseEntity.ok(response);
   }
 
   @PatchMapping("/{id}")
-  public ResponseEntity<Product> patchProductStock(@PathVariable UUID id, @RequestBody int stock) {
-    return ResponseEntity.ok(productServiceImpl.patchProductStock(id, stock));
+  public ResponseEntity<GlobalResponse<ProductDto>> patchProductStock(@PathVariable UUID id, @RequestBody int stock) {
+    GlobalResponse<ProductDto> response = new GlobalResponse<>(productServiceImpl.patchProductStock(id, stock), null);
+    return ResponseEntity.ok(response);
   }
 
 
