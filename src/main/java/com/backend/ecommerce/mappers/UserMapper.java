@@ -1,8 +1,8 @@
-package com.backend.ecommerce.services.mappers;
+package com.backend.ecommerce.mappers;
 
 import com.backend.ecommerce.entities.User;
-import com.backend.ecommerce.services.dtos.UserDto;
-import com.backend.ecommerce.services.utilities.Constants;
+import com.backend.ecommerce.dtos.user.UserDto;
+import com.backend.ecommerce.shared.utilities.Constants;
 import org.mapstruct.*;
 
 import java.util.List;
