@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class ProductService {
+public class ProductServiceImpl {
   @Autowired
   ProductJpaRepo productJpaRepo;
 
