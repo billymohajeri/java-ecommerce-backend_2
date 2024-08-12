@@ -1,5 +1,6 @@
 package com.backend.ecommerce.controllers;
 
+import com.backend.ecommerce.dtos.user.UserCreateDto;
 import com.backend.ecommerce.dtos.user.UserDto;
 import com.backend.ecommerce.dtos.user.UserLoginDto;
 import com.backend.ecommerce.services.UserServiceImpl;
@@ -43,8 +44,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<GlobalResponse<UserDto>> registerUser(@Valid @RequestBody UserDto userDto) {
-        return ResponseEntity.ok(new GlobalResponse<>(userServiceImpl.register(userDto), null));
+    public ResponseEntity<GlobalResponse<UserDto>> registerUser(@Valid @RequestBody UserCreateDto userCreateDto) {
+        return ResponseEntity.ok(new GlobalResponse<>(userServiceImpl.register(userCreateDto), null));
     }
 
     @PutMapping

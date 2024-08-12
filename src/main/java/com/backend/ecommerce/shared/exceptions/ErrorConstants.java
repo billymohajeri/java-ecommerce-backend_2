@@ -12,6 +12,7 @@ public class ErrorConstants {
         public static final String EMAIL_ALREADY_PRESENT = "This phone already exists";
 
         public static final String PASSWORD_NOT_EMPTY = "Password cannot be empty";
+        public static final String INVALID_PASSWORD = "Password should have minimum eight characters, at least one letter and one number";
         public static final String RESOURCE_NOT_FOUND = "Resource not found";
         public static final String INVALID_PHONE = "Invalid Phone Number";
     }

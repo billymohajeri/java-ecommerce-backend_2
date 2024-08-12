@@ -1,5 +1,6 @@
 package com.backend.ecommerce.services;
 
+import com.backend.ecommerce.dtos.user.UserCreateDto;
 import com.backend.ecommerce.dtos.user.UserDto;
 import com.backend.ecommerce.dtos.user.UserLoginDto;
 import com.backend.ecommerce.entities.User;
@@ -24,17 +25,20 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     @Autowired
+    AuthServiceImpl authService;
+    @Autowired
     private UserJpaRepo userJpaRepo;
     @Autowired
     private UserMapper userMapper;
 
     public void loginUser(UserLoginDto userLoginDTO) {
-        Optional<User> user = userJpaRepo.findByEmail(userLoginDTO.email());
-        if (user.isEmpty()) {
-            throw new NoSuchElementException(ErrorConstants.ErrorMessage.USER_DOES_NOT_EXIST);
-        }
+//        Optional<User> user = userJpaRepo.findByEmail(userLoginDTO.email());
+//        if (user.isEmpty()) {
+//            throw new NoSuchElementException(ErrorConstants.ErrorMessage.USER_DOES_NOT_EXIST);
+//        }
         // TODO: Implement the rest
-        System.out.println(user.get());
+        authService.authenticate(userLoginDTO);
+//        System.out.println(user.get());
     }
 
     private boolean checkUserExists(UUID id) {
@@ -56,14 +60,13 @@ public class UserServiceImpl implements UserService {
         return userMapper.toUserDtos(users);
     }
 
-    public UserDto register(UserDto userDto) {
-        boolean userExists = checkUserExists(userDto.email());
+    public UserDto register(UserCreateDto userCreateDto) {
+        boolean userExists = checkUserExists(userCreateDto.email());
         if (userExists) {
             throw new CustomException(ErrorConstants.ErrorMessage.USER_ALREADY_PRESENT, HttpStatus.CONFLICT.value());
         }
-        User user = userMapper.toUser(userDto);
-        User savedUser = userJpaRepo.save(user);
-        return userMapper.toUserDto(savedUser);
+        User user = authService.register(userCreateDto);
+        return userMapper.toUserDto(user);
     }
 
     public UserDto updateUser(UserDto userDto) {

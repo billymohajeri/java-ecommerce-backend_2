@@ -1,5 +1,6 @@
 package com.backend.ecommerce.services.interfaces;
 
+import com.backend.ecommerce.dtos.user.UserCreateDto;
 import com.backend.ecommerce.dtos.user.UserDto;
 import com.backend.ecommerce.dtos.user.UserLoginDto;
 
@@ -12,7 +13,7 @@ public interface UserService {
 
     void logoutUser();
 
-    UserDto register(UserDto userDto);
+    UserDto register(UserCreateDto userCreateDto);
 
     List<UserDto> getAllUsers();
 
