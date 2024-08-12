@@ -22,7 +22,7 @@ public class Payment {
     private UUID id;
 
     @Column(name = "order_id", nullable = false)
-    private UUID orderid;
+    private UUID orderId;
 
     @Column(name = "amount", nullable = false)
     private Double amount;
