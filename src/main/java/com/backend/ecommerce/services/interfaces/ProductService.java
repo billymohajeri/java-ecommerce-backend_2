@@ -1,5 +1,6 @@
 package com.backend.ecommerce.services.interfaces;
 
+import com.backend.ecommerce.dtos.ProductDto;
 import com.backend.ecommerce.entities.Product;
 
 import java.util.List;
@@ -8,15 +9,15 @@ import java.util.UUID;
 
 public interface ProductService {
 
-  public Product createProduct(Product product);
+  ProductDto createProduct(ProductDto productDto);
 
-  public List<Product> getAllProducts();
+  List<ProductDto> getAllProducts();
 
-  public Optional<Product> getProductById(UUID id);
+  Optional<ProductDto> getProductById(UUID id);
 
-  public Product updateProduct(Product product);
+  Product updateProduct(Product product);
 
-  public Product deleteProduct(UUID id);
+  Product deleteProduct(UUID id);
 
-  public Product patchProductStock(UUID id, int stock);
+  Product patchProductStock(UUID id, int stock);
 }

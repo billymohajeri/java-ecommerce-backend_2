@@ -1,13 +1,17 @@
 package com.backend.ecommerce.services;
 
+import com.backend.ecommerce.dtos.ProductDto;
 import com.backend.ecommerce.entities.Product;
+import com.backend.ecommerce.mappers.ProductMapper;
 import com.backend.ecommerce.repositories.ProductJpaRepo;
 import com.backend.ecommerce.services.interfaces.ProductService;
+import com.backend.ecommerce.shared.exceptions.ErrorConstants;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,17 +20,26 @@ public class ProductServiceImpl implements ProductService {
 
   @Autowired
   private ProductJpaRepo productJpaRepo;
+  @Autowired
+  private ProductMapper productMapper;
 
-  public Product createProduct(Product product) {
-    return productJpaRepo.save(product);
+  public ProductDto createProduct(ProductDto productDto) {
+    Product product = productMapper.toProduct(productDto);
+    Product savedProduct = productJpaRepo.save(product);
+    return productMapper.toProductDto(savedProduct);
   }
 
-  public List<Product> getAllProducts() {
-    return productJpaRepo.findAll();
+  public List<ProductDto> getAllProducts() {
+    List<Product> products = productJpaRepo.findAll();
+    return productMapper.toProductDtos(products);
   }
 
-  public Optional<Product> getProductById(UUID id) {
-    return productJpaRepo.findById(id);
+  public Optional<ProductDto> getProductById(UUID id) {
+    Optional<Product> product = productJpaRepo.findById(id);
+    return Optional.ofNullable(
+            product.map(value -> productMapper.toProductDto(value))
+                    .orElseThrow(() -> new NoSuchElementException(
+                            ErrorConstants.ErrorMessage.PRODUCT_DOES_NOT_EXIST)));
   }
 
   public Product updateProduct(Product product) {

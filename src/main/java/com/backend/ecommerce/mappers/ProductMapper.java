@@ -10,7 +10,9 @@ import java.util.List;
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.FIELD)
 public interface ProductMapper {
 
-  List<ProductDto> toProductDtos(List<Product> products);
+  Product toProduct(ProductDto source);
 
-  List<Product> toProducts(List<ProductDto> productDtos);
+  ProductDto toProductDto(Product source);
+
+  List<ProductDto> toProductDtos(List<Product> products);
 }
