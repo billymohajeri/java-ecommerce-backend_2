@@ -1,9 +1,10 @@
 package com.backend.ecommerce.controllers;
 
-import com.backend.ecommerce.services.dtos.UserDto;
-import com.backend.ecommerce.services.dtos.UserLoginDto;
-import com.backend.ecommerce.entities.User;
-import com.backend.ecommerce.services.UserService;
+import com.backend.ecommerce.dtos.user.UserDto;
+import com.backend.ecommerce.dtos.user.UserLoginDto;
+import com.backend.ecommerce.services.UserServiceImpl;
+import com.backend.ecommerce.shared.response.GlobalResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,42 +17,44 @@ import java.util.UUID;
 @RequestMapping("/api/v1/users")
 public class UserController {
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @PostMapping("/login")
-    public void loginUser(@RequestBody UserLoginDto userLoginDTO) {
-        userService.loginUser(userLoginDTO);
+    public void loginUser(@Valid @RequestBody UserLoginDto userLoginDTO) {
+        userServiceImpl.loginUser(userLoginDTO);
     }
 
     @PostMapping("/logout")
     public void loginUser() {
-        userService.logoutUser();
+        userServiceImpl.logoutUser();
     }
 
-    @GetMapping("")
-    public ResponseEntity<List<UserDto>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    @GetMapping
+    public ResponseEntity<GlobalResponse<List<UserDto>>> getAllUsers() {
+        List<UserDto> users = userServiceImpl.getAllUsers();
+        GlobalResponse<List<UserDto>> response = new GlobalResponse<>(users, null);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable String id) {
-        Optional<UserDto> user = userService.getUserById(UUID.fromString(id));
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<GlobalResponse<UserDto>> getUserById(@PathVariable UUID id) {
+        Optional<UserDto> userDto = userServiceImpl.getUserById(id);
+        return userDto.map(dto -> ResponseEntity.ok(new GlobalResponse<>(dto, null))).orElseThrow();
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody UserDto userDto) {
-        return ResponseEntity.ok(userService.register(userDto));
+    public ResponseEntity<GlobalResponse<UserDto>> registerUser(@Valid @RequestBody UserDto userDto) {
+        return ResponseEntity.ok(new GlobalResponse<>(userServiceImpl.register(userDto), null));
     }
 
-    @PutMapping("")
-    public ResponseEntity<User> updateUser(@RequestBody UserDto userDto) {
-        return ResponseEntity.ok(userService.updateUser(userDto));
+    @PutMapping
+    public ResponseEntity<GlobalResponse<UserDto>> updateUser(@Valid @RequestBody UserDto userDto) {
+        return ResponseEntity.ok(new GlobalResponse<>(userServiceImpl.updateUser(userDto), null));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable String id) {
-        //TODO: validate UUID
-        return ResponseEntity.ok(userService.deleteUser(UUID.fromString(id)));
+    public ResponseEntity<GlobalResponse<UserDto>> deleteUser(@PathVariable UUID id) {
+        GlobalResponse<UserDto> response = new GlobalResponse<>(userServiceImpl.deleteUser(id), null);
+        return ResponseEntity.ok(response);
     }
 }

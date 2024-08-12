@@ -2,9 +2,9 @@ package com.backend.ecommerce.services;
 
 import com.backend.ecommerce.entities.Order;
 import com.backend.ecommerce.repositories.OrderJpaRepo;
-import com.backend.ecommerce.services.dtos.OrderDto;
-import com.backend.ecommerce.services.dtos.OrderUpdateDto;
-import com.backend.ecommerce.services.mappers.OrderMapper;
+import com.backend.ecommerce.dtos.OrderDto;
+import com.backend.ecommerce.dtos.OrderUpdateDto;
+import com.backend.ecommerce.mappers.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
