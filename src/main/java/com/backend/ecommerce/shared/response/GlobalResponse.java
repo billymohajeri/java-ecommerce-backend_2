@@ -1,6 +1,6 @@
 package com.backend.ecommerce.shared.response;
 
-import com.backend.ecommerce.shared.exception.CustomErrorVm;
+import com.backend.ecommerce.shared.exceptions.CustomErrorVm;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

@@ -1,8 +1,8 @@
 package com.backend.ecommerce.controllers;
 
 import com.backend.ecommerce.services.OrderService;
-import com.backend.ecommerce.services.dtos.OrderDto;
-import com.backend.ecommerce.services.dtos.OrderUpdateDto;
+import com.backend.ecommerce.dtos.OrderDto;
+import com.backend.ecommerce.dtos.OrderUpdateDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
