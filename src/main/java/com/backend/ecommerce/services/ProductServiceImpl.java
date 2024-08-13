@@ -68,6 +68,7 @@ public class ProductServiceImpl implements ProductService {
       patchedProduct.setStock(stock);
       productJpaRepo.save(patchedProduct);
       return productMapper.toProductDto(patchedProduct);
-    }).orElseThrow();
+    }).orElseThrow(() -> new NoSuchElementException(
+            ErrorConstants.ErrorMessage.PRODUCT_DOES_NOT_EXIST));
   }
 }
