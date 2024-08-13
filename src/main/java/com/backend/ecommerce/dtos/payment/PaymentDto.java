@@ -1,4 +1,4 @@
-package com.backend.ecommerce.dtos;
+package com.backend.ecommerce.dtos.payment;
 
 import com.backend.ecommerce.entities.enums.PaymentMethod;
 import com.backend.ecommerce.entities.enums.PaymentStatus;

@@ -1,7 +1,7 @@
-package com.backend.ecommerce.services;
+package com.backend.ecommerce.services.interfaces;
 
-import com.backend.ecommerce.services.dtos.PaymentCreateDto;
-import com.backend.ecommerce.services.dtos.PaymentResponseDto;
+import com.backend.ecommerce.dtos.payment.PaymentCreateDto;
+import com.backend.ecommerce.dtos.payment.PaymentResponseDto;
 
 import java.util.UUID;
 

@@ -1,8 +1,8 @@
 package com.backend.ecommerce.controllers;
 
 import com.backend.ecommerce.services.PaymentServiceImpl;
-import com.backend.ecommerce.services.dtos.PaymentCreateDto;
-import com.backend.ecommerce.services.dtos.PaymentResponseDto;
+import com.backend.ecommerce.dtos.payment.PaymentCreateDto;
+import com.backend.ecommerce.dtos.payment.PaymentResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

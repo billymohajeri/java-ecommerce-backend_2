@@ -1,8 +1,8 @@
 package com.backend.ecommerce.controllers;
 
-import com.backend.ecommerce.services.OrderService;
-import com.backend.ecommerce.dtos.OrderDto;
-import com.backend.ecommerce.dtos.OrderUpdateDto;
+import com.backend.ecommerce.dtos.order.OrderDto;
+import com.backend.ecommerce.dtos.order.OrderUpdateDto;
+import com.backend.ecommerce.services.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import java.util.UUID;
 public class OrderController {
 
     @Autowired
-    OrderService orderService;
+    OrderServiceImpl orderService;
 
     @PostMapping
     public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto){

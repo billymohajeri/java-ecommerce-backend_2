@@ -1,7 +1,7 @@
 package com.backend.ecommerce.mappers;
 
 import com.backend.ecommerce.entities.Order;
-import com.backend.ecommerce.dtos.OrderDto;
+import com.backend.ecommerce.dtos.order.OrderDto;
 import com.backend.ecommerce.shared.utilities.Constants;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

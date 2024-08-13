@@ -1,10 +1,11 @@
 package com.backend.ecommerce.services;
 
+import com.backend.ecommerce.dtos.order.OrderDto;
+import com.backend.ecommerce.dtos.order.OrderUpdateDto;
 import com.backend.ecommerce.entities.Order;
-import com.backend.ecommerce.repositories.OrderJpaRepo;
-import com.backend.ecommerce.dtos.OrderDto;
-import com.backend.ecommerce.dtos.OrderUpdateDto;
 import com.backend.ecommerce.mappers.OrderMapper;
+import com.backend.ecommerce.repositories.OrderJpaRepo;
+import com.backend.ecommerce.services.interfaces.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class OrderService {
+public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderJpaRepo orderJpaRepo;
 
@@ -49,4 +50,5 @@ public class OrderService {
     public void deleteOrder(UUID id){
         orderJpaRepo.deleteById(id);
     }
+
 }

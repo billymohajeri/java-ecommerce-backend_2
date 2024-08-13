@@ -1,4 +1,4 @@
-package com.backend.ecommerce.dtos;
+package com.backend.ecommerce.dtos.order;
 
 import com.backend.ecommerce.entities.enums.OrderStatus;
 
