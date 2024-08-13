@@ -34,9 +34,9 @@ public class Review {
   @Column(name = "rating", columnDefinition = "NUMERIC(2,1)")
   private float rating;
 
-  @Column(name = "images", nullable = false, columnDefinition = "TEXT[]")
+  @Column(name = "images", columnDefinition = "TEXT[]")
   private List<String> images;
 
   @Column(name = "date_time", nullable = false, columnDefinition = "TIMESTAMP(6) WITHOUT TIME ZONE")
-  private LocalDateTime date_time;
+  private LocalDateTime dateTime;
 }
