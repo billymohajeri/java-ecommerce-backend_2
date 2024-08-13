@@ -6,7 +6,9 @@ import com.backend.ecommerce.entities.Order;
 import com.backend.ecommerce.mappers.OrderMapper;
 import com.backend.ecommerce.repositories.OrderJpaRepo;
 import com.backend.ecommerce.services.interfaces.OrderService;
+import com.backend.ecommerce.shared.exceptions.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,7 +50,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public void deleteOrder(UUID id){
-        orderJpaRepo.deleteById(id);
+        Optional<Order> deletedOrder = orderJpaRepo.findById(id);
+        if(deletedOrder.isPresent()){
+            orderJpaRepo.deleteById(id);
+        }else{
+            throw new CustomException("Order not found! ", HttpStatus.NOT_FOUND.value());
+        }
     }
 
 }
