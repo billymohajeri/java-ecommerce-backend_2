@@ -46,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
                     order.setStatus(orderDto.status());
                     Order updatedOrder = orderJpaRepo.save(order);
                     return orderMapper.toOrderDto(updatedOrder);
-                }).orElseThrow(() -> new RuntimeException("Order not found!"));
+                }).orElseThrow(() -> new CustomException("Order not found", HttpStatus.NOT_FOUND.value()));
     }
 
     public void deleteOrder(UUID id){
@@ -54,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
         if(deletedOrder.isPresent()){
             orderJpaRepo.deleteById(id);
         }else{
-            throw new CustomException("Order not found! ", HttpStatus.NOT_FOUND.value());
+            throw new CustomException("Order not found", HttpStatus.NOT_FOUND.value());
         }
     }
 
