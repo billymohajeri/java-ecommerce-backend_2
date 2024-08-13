@@ -3,6 +3,7 @@ package com.backend.ecommerce.controllers;
 import com.backend.ecommerce.services.PaymentServiceImpl;
 import com.backend.ecommerce.dtos.payment.PaymentCreateDto;
 import com.backend.ecommerce.dtos.payment.PaymentResponseDto;
+import com.backend.ecommerce.services.interfaces.PaymentService;
 import com.backend.ecommerce.shared.response.GlobalResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @RequestMapping("api/v1/payments")
 public class PaymentController {
     @Autowired
-    private PaymentServiceImpl paymentService;
+    private PaymentService paymentService;
 
     @PostMapping
     public ResponseEntity<GlobalResponse<PaymentResponseDto>> processPayment(@Valid @RequestBody PaymentCreateDto paymentCreateDto){
