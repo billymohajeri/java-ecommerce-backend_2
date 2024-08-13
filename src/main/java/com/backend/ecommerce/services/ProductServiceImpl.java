@@ -62,13 +62,12 @@ public class ProductServiceImpl implements ProductService {
   }
 
   public ProductDto patchProductStock(UUID id, int stock) {
-    Optional<ProductDto> findProductDto = getProductById(id);
-    return findProductDto.map(dto -> {
-      Product patchedProduct = productMapper.toProduct(dto);
+    Optional<Product> findProduct = productJpaRepo.findById(id);
+    if (findProduct.isPresent()) {
+      Product patchedProduct = findProduct.get();
       patchedProduct.setStock(stock);
       productJpaRepo.save(patchedProduct);
       return productMapper.toProductDto(patchedProduct);
-    }).orElseThrow(() -> new NoSuchElementException(
-            ErrorConstants.ErrorMessage.PRODUCT_DOES_NOT_EXIST));
+    } else throw new NoSuchElementException(ErrorConstants.ErrorMessage.PRODUCT_DOES_NOT_EXIST);
   }
 }
