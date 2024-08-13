@@ -44,17 +44,11 @@ public class ProductServiceImpl implements ProductService {
   public ProductDto updateProduct(ProductDto productDto) {
     Optional<ProductDto> findProductDto = getProductById(productDto.id());
     return findProductDto.map(dto -> {
-      Product updatedProduct = productMapper.toProduct(dto);
-      updatedProduct.setName(productDto.name());
-      updatedProduct.setPrice(productDto.price());
-      updatedProduct.setDescription(productDto.description());
-      updatedProduct.setImages(productDto.images());
-      updatedProduct.setColor(productDto.color());
-      updatedProduct.setRating(productDto.rating());
-      updatedProduct.setStock(productDto.stock());
+      Product updatedProduct = productMapper.toProduct(productDto);
       Product newProduct = productJpaRepo.save(updatedProduct);
       return productMapper.toProductDto(newProduct);
-    }).orElseThrow();
+    }).orElseThrow(() -> new NoSuchElementException(
+            ErrorConstants.ErrorMessage.PRODUCT_DOES_NOT_EXIST));
   }
 
   public ProductDto deleteProduct(UUID id) {
@@ -63,7 +57,8 @@ public class ProductServiceImpl implements ProductService {
       Product deletedProduct = productMapper.toProduct(dto);
       productJpaRepo.delete(deletedProduct);
       return dto;
-    }).orElseThrow();
+    }).orElseThrow(() -> new NoSuchElementException(
+            ErrorConstants.ErrorMessage.PRODUCT_DOES_NOT_EXIST));
   }
 
   public ProductDto patchProductStock(UUID id, int stock) {
