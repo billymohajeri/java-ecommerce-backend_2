@@ -2,7 +2,7 @@ package com.backend.ecommerce.services.interfaces;
 
 import com.backend.ecommerce.dtos.ReviewDto;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 
 public interface ReviewService {
@@ -11,9 +11,9 @@ public interface ReviewService {
 
   ReviewDto updateReview(ReviewDto reviewDto);
 
-  Optional<ReviewDto> getReviewByUserId(UUID userId);
+  List<ReviewDto> getReviewByUserId(UUID userId);
 
-  Optional<ReviewDto> getReviewByProductId(UUID productId);
+  List<ReviewDto> getReviewByProductId(UUID productId);
 
   ReviewDto deleteReview(UUID id);
 }
