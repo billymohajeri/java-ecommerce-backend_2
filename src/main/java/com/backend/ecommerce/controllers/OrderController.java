@@ -5,6 +5,7 @@ import com.backend.ecommerce.dtos.order.OrderUpdateDto;
 import com.backend.ecommerce.services.interfaces.OrderService;
 import com.backend.ecommerce.shared.exceptions.CustomException;
 import com.backend.ecommerce.shared.response.GlobalResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class OrderController {
     OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<GlobalResponse<OrderDto>> createOrder(@RequestBody OrderDto orderDto){
+    public ResponseEntity<GlobalResponse<OrderDto>> createOrder(@Valid @RequestBody OrderDto orderDto){
         OrderDto createdOrder = orderService.createOrder(orderDto);
         GlobalResponse<OrderDto> response = new GlobalResponse<>(createdOrder,null);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -43,7 +44,7 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GlobalResponse<OrderDto>> updateOrder(@PathVariable UUID id, @RequestBody OrderUpdateDto orderDto){
+    public ResponseEntity<GlobalResponse<OrderDto>> updateOrder(@PathVariable UUID id, @Valid @RequestBody OrderUpdateDto orderDto){
         try{
             OrderDto updatedOrder = orderService.updateOrder(id, orderDto);
             GlobalResponse<OrderDto> response = new GlobalResponse<>(updatedOrder, null);
