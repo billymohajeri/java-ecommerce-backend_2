@@ -20,7 +20,7 @@ import java.util.UUID;
 public class OrderController {
 
     @Autowired
-    OrderService orderService;
+    private OrderService orderService;
 
     @PostMapping
     public ResponseEntity<GlobalResponse<OrderDto>> createOrder(@Valid @RequestBody OrderDto orderDto){

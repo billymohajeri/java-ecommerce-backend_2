@@ -10,15 +10,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
     @Autowired
-    PaymentJpaRepo paymentJpaRepo;
+    private PaymentJpaRepo paymentJpaRepo;
     @Autowired
-    PaymentMapper paymentMapper;
+    private PaymentMapper paymentMapper;
 
     @Override
     public PaymentResponseDto processPayment(PaymentCreateDto paymentCreateDto) {
@@ -31,5 +33,13 @@ public class PaymentServiceImpl implements PaymentService {
     public PaymentResponseDto getPaymentDetails(UUID paymentId) {
         Payment payment = paymentJpaRepo.findById(paymentId).orElseThrow(() -> new IllegalArgumentException("Payment Not Found! "));
         return paymentMapper.toPaymentResponseDto(payment);
+    }
+
+    @Override
+    public List<PaymentResponseDto> getAllPayments() {
+        List<Payment> payments = paymentJpaRepo.findAll();
+        return payments.stream()
+                .map(paymentMapper::toPaymentResponseDto)
+                .collect(Collectors.toList());
     }
 }
