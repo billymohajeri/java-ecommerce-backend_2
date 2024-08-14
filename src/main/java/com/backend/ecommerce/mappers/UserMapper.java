@@ -1,5 +1,6 @@
 package com.backend.ecommerce.mappers;
 
+import com.backend.ecommerce.dtos.user.UserCreateDto;
 import com.backend.ecommerce.entities.User;
 import com.backend.ecommerce.dtos.user.UserDto;
 import com.backend.ecommerce.shared.utilities.Constants;

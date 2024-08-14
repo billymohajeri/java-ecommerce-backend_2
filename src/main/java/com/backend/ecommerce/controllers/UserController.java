@@ -1,8 +1,10 @@
 package com.backend.ecommerce.controllers;
 
+import com.backend.ecommerce.dtos.user.UserCreateDto;
 import com.backend.ecommerce.dtos.user.UserDto;
 import com.backend.ecommerce.dtos.user.UserLoginDto;
-import com.backend.ecommerce.services.UserServiceImpl;
+import com.backend.ecommerce.dtos.user.UserLoginResponseDto;
+import com.backend.ecommerce.services.interfaces.UserService;
 import com.backend.ecommerce.shared.response.GlobalResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +19,11 @@ import java.util.UUID;
 @RequestMapping("/api/v1/users")
 public class UserController {
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private UserService userServiceImpl;
 
     @PostMapping("/login")
-    public void loginUser(@Valid @RequestBody UserLoginDto userLoginDTO) {
-        userServiceImpl.loginUser(userLoginDTO);
+    public ResponseEntity<GlobalResponse<UserLoginResponseDto>> loginUser(@Valid @RequestBody UserLoginDto userLoginDTO) {
+        return ResponseEntity.ok(new GlobalResponse<>(userServiceImpl.loginUser(userLoginDTO), null));
     }
 
     @PostMapping("/logout")
@@ -43,8 +45,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<GlobalResponse<UserDto>> registerUser(@Valid @RequestBody UserDto userDto) {
-        return ResponseEntity.ok(new GlobalResponse<>(userServiceImpl.register(userDto), null));
+    public ResponseEntity<GlobalResponse<UserDto>> registerUser(@Valid @RequestBody UserCreateDto userCreateDto) {
+        return ResponseEntity.ok(new GlobalResponse<>(userServiceImpl.register(userCreateDto), null));
     }
 
     @PutMapping
