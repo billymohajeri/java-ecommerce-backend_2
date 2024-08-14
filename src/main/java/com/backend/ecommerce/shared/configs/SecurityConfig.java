@@ -21,37 +21,39 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-    @Autowired
-    private AuthFilter authFilter;
+  @Autowired
+  private UserDetailsServiceImpl userDetailsService;
+  @Autowired
+  private AuthFilter authFilter;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(req ->
-                        req.requestMatchers(
-                                        "/api/v1/users/login",
-                                        "/api/v1/users/register",
-                                        "/api/v1/carts")
-                                .permitAll()
-                                .requestMatchers("/api/v1/users/*").hasAuthority(AuthenticationRole.ADMIN.name())
-                                .anyRequest()
-                                .authenticated())
-                .userDetailsService(userDetailsService)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    return http
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(req ->
+                    req.requestMatchers(
+                                    "/api/v1/users/login",
+                                    "/api/v1/users/register",
+                                    "/api/v1/carts",
+                                    "/api/v1/reviews/product/*"
+                            )
+                            .permitAll()
+                            .requestMatchers("/api/v1/users/*", "/api/v1/reviews/*").hasAuthority(AuthenticationRole.ADMIN.name())
+                            .anyRequest()
+                            .authenticated())
+            .userDetailsService(userDetailsService)
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
+  }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
-    }
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+    return configuration.getAuthenticationManager();
+  }
 }
