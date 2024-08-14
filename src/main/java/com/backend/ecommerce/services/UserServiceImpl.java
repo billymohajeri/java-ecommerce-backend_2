@@ -1,7 +1,9 @@
 package com.backend.ecommerce.services;
 
+import com.backend.ecommerce.dtos.user.UserCreateDto;
 import com.backend.ecommerce.dtos.user.UserDto;
 import com.backend.ecommerce.dtos.user.UserLoginDto;
+import com.backend.ecommerce.dtos.user.UserLoginResponseDto;
 import com.backend.ecommerce.entities.User;
 import com.backend.ecommerce.repositories.UserJpaRepo;
 import com.backend.ecommerce.mappers.UserMapper;
@@ -24,18 +26,18 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     @Autowired
+    private AuthServiceImpl authService;
+    @Autowired
     private UserJpaRepo userJpaRepo;
     @Autowired
     private UserMapper userMapper;
 
-    public void loginUser(UserLoginDto userLoginDTO) {
-        Optional<User> user = userJpaRepo.findByEmail(userLoginDTO.email());
-        if (user.isEmpty()) {
-            throw new NoSuchElementException(ErrorConstants.ErrorMessage.USER_DOES_NOT_EXIST);
-        }
-        // TODO: Implement the rest
-        System.out.println(user.get());
-    }
+    public UserLoginResponseDto loginUser(UserLoginDto userLoginDTO) {
+        String token = authService.authenticate(userLoginDTO);
+        User user = userJpaRepo.findByEmail(userLoginDTO.email()).orElseThrow();
+
+        return new UserLoginResponseDto(token, userMapper.toUserDto(user));
+ }
 
     private boolean checkUserExists(UUID id) {
         if (id != null) {
@@ -56,14 +58,15 @@ public class UserServiceImpl implements UserService {
         return userMapper.toUserDtos(users);
     }
 
-    public UserDto register(UserDto userDto) {
-        boolean userExists = checkUserExists(userDto.email());
-        if (userExists) {
+    public UserDto register(UserCreateDto userCreateDto) {
+        boolean emailExists = checkUserExists(userCreateDto.email());
+        boolean phoneExists = userJpaRepo.findByPhoneNumber(userCreateDto.phoneNumber()).isPresent();
+        if (emailExists || phoneExists) {
             throw new CustomException(ErrorConstants.ErrorMessage.USER_ALREADY_PRESENT, HttpStatus.CONFLICT.value());
         }
-        User user = userMapper.toUser(userDto);
-        User savedUser = userJpaRepo.save(user);
-        return userMapper.toUserDto(savedUser);
+
+        User user = authService.register(userCreateDto);
+        return userMapper.toUserDto(user);
     }
 
     public UserDto updateUser(UserDto userDto) {

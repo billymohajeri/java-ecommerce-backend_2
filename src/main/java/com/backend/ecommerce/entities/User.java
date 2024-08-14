@@ -8,8 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -18,7 +23,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -35,7 +40,7 @@ public class User {
     @Column(name = "email", nullable = false, unique = true, columnDefinition = "varchar(70)")
     private String email;
 
-    @Column(name = "password", columnDefinition = "varchar(15)")
+    @Column(name = "password", columnDefinition = "text")
     private String password;
 
     @Column(name = "phone", unique = true)
@@ -47,4 +52,14 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private AuthenticationRole role;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
 }
