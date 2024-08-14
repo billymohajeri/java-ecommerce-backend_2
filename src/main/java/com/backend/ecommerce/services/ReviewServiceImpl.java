@@ -36,11 +36,15 @@ public class ReviewServiceImpl implements ReviewService {
                             ErrorConstants.ErrorMessage.REVIEW_DOES_NOT_EXIST)));
   }
 
-  public ReviewDto updateReview(ReviewDto reviewDto) {
-    Optional<Review> findReview = reviewJpaRepo.findById(reviewDto.id());
-    return findReview.map(dto -> {
-      Review updatedReview = reviewMapper.toReview(reviewDto);
-      Review savedReview = reviewJpaRepo.save(updatedReview);
+  public ReviewDto updateReview(UUID id, ReviewDto newReviewDto) {
+    Optional<Review> findReview = reviewJpaRepo.findById(id);
+    return findReview.map(existingReviewDto -> {
+      existingReviewDto.setReview(newReviewDto.review());
+      existingReviewDto.setRating(newReviewDto.rating());
+      existingReviewDto.setImages(newReviewDto.images());
+
+//      Review updatedReview = reviewMapper.toReview(existingReviewDto);
+      Review savedReview = reviewJpaRepo.save(existingReviewDto);
       return reviewMapper.toReviewDto(savedReview);
     }).orElseThrow(() -> new NoSuchElementException(
             ErrorConstants.ErrorMessage.PRODUCT_DOES_NOT_EXIST));
@@ -54,7 +58,6 @@ public class ReviewServiceImpl implements ReviewService {
   public List<ReviewDto> getReviewByProductId(UUID productId) {
     List<Review> reviews = reviewJpaRepo.findByProductId(productId);
     return reviewMapper.toReviewDtos(reviews);
-
   }
 
   public ReviewDto deleteReview(UUID id) {

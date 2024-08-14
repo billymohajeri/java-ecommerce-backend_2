@@ -9,7 +9,7 @@ public interface ReviewService {
 
   ReviewDto createReview(ReviewDto reviewDto);
 
-  ReviewDto updateReview(ReviewDto reviewDto);
+  ReviewDto updateReview(UUID id, ReviewDto reviewDto);
 
   List<ReviewDto> getReviewByUserId(UUID userId);
 

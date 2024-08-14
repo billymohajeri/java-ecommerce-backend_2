@@ -22,15 +22,28 @@ public class ReviewController {
     return ResponseEntity.ok(new GlobalResponse<>(reviewService.createReview(reviewDto), null));
   }
 
-  @PutMapping
-  public ResponseEntity<GlobalResponse<ReviewDto>> updateReview(@RequestBody ReviewDto reviewDto) {
-    return ResponseEntity.ok(new GlobalResponse<>(reviewService.updateReview(reviewDto), null));
+  @PutMapping("/{id}")
+  public ResponseEntity<GlobalResponse<ReviewDto>> updateReview(@PathVariable UUID id, @RequestBody ReviewDto reviewDto) {
+    return ResponseEntity.ok(new GlobalResponse<>(reviewService.updateReview(id, reviewDto), null));
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<GlobalResponse<List<ReviewDto>>> getReviewByUserId(@PathVariable UUID id) {
-    List<ReviewDto> reviews = reviewService.getReviewByUserId(id);
+  @GetMapping("/user/{userId}")
+  public ResponseEntity<GlobalResponse<List<ReviewDto>>> getReviewByUserId(@PathVariable UUID userId) {
+    List<ReviewDto> reviews = reviewService.getReviewByUserId(userId);
     GlobalResponse<List<ReviewDto>> response = new GlobalResponse<>(reviews, null);
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("/product/{productId}")
+  public ResponseEntity<GlobalResponse<List<ReviewDto>>> getReviewByProductId(@PathVariable UUID productId) {
+    List<ReviewDto> reviews = reviewService.getReviewByProductId(productId);
+    GlobalResponse<List<ReviewDto>> response = new GlobalResponse<>(reviews, null);
+    return ResponseEntity.ok(response);
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<GlobalResponse<ReviewDto>> deleteReview(@PathVariable UUID id) {
+    GlobalResponse<ReviewDto> response = new GlobalResponse<>(reviewService.deleteReview(id), null);
     return ResponseEntity.ok(response);
   }
 }
