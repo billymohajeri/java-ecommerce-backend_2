@@ -1,7 +1,8 @@
 package com.backend.ecommerce.controllers;
 
-import com.backend.ecommerce.entities.Product;
-import com.backend.ecommerce.services.ProductService;
+import com.backend.ecommerce.dtos.ProductDto;
+import com.backend.ecommerce.services.interfaces.ProductService;
+import com.backend.ecommerce.shared.response.GlobalResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,35 +18,39 @@ public class ProductController {
   private ProductService productService;
 
   @PostMapping
-  public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-    return ResponseEntity.ok(productService.createProduct(product));
+  public ResponseEntity<GlobalResponse<ProductDto>> createProduct(@RequestBody ProductDto productDto) {
+    return ResponseEntity.ok(new GlobalResponse<>(productService.createProduct(productDto), null));
   }
 
   @GetMapping
-  public ResponseEntity<List<Product>> getAllProducts() {
-    return ResponseEntity.ok(productService.getAllProducts());
+  public ResponseEntity<GlobalResponse<List<ProductDto>>> getAllProducts() {
+    List<ProductDto> products = productService.getAllProducts();
+    GlobalResponse<List<ProductDto>> response = new GlobalResponse<>(products, null);
+    return ResponseEntity.ok(response);
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Product> getProductById(@PathVariable UUID id) {
-    Optional<Product> product = productService.getProductById(id);
-    return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+  public ResponseEntity<GlobalResponse<ProductDto>> getProductById(@PathVariable UUID id) {
+    Optional<ProductDto> productDto = productService.getProductById(id);
+    return productDto.map(dto -> ResponseEntity.ok(new GlobalResponse<>(dto, null)))
+            .orElseThrow();
   }
 
   @PutMapping
-  public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
-    productService.updateProduct(product);
-    return ResponseEntity.ok(product);
+  public ResponseEntity<GlobalResponse<ProductDto>> updateProduct(@RequestBody ProductDto productDto) {
+    return ResponseEntity.ok(new GlobalResponse<>(productService.updateProduct(productDto), null));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Product> deleteProduct(@PathVariable UUID id) {
-    return ResponseEntity.ok(productService.deleteProduct(id));
+  public ResponseEntity<GlobalResponse<ProductDto>> deleteProduct(@PathVariable UUID id) {
+    GlobalResponse<ProductDto> response = new GlobalResponse<>(productService.deleteProduct(id), null);
+    return ResponseEntity.ok(response);
   }
 
   @PatchMapping("/{id}")
-  public ResponseEntity<Product> patchProductStock(@PathVariable UUID id, @RequestBody int stock) {
-    return ResponseEntity.ok(productService.patchProductStock(id, stock));
+  public ResponseEntity<GlobalResponse<ProductDto>> patchProductStock(@PathVariable UUID id, @RequestBody int stock) {
+    GlobalResponse<ProductDto> response = new GlobalResponse<>(productService.patchProductStock(id, stock), null);
+    return ResponseEntity.ok(response);
   }
 
 

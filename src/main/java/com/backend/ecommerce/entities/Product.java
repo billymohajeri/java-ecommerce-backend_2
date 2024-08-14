@@ -29,20 +29,18 @@ public class Product {
   @Column(name = "description", columnDefinition = "TEXT")
   private String description;
 
-  @ElementCollection
-  @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
   @Column(name = "image")
   private List<String> images;
 
   @Column(name = "color", nullable = false, columnDefinition = "VARCHAR(50)")
   private String color;
 
-  @Column(name = "meta")
+  @Column(name = "meta", columnDefinition = "VARCHAR(255)")
   private String meta;
 
   @Column(name = "rating", columnDefinition = "NUMERIC(2,1)")
   private float rating;
 
-  @Column(name = "stock", columnDefinition = "INTEGER")
+  @Column(name = "stock", nullable = false, columnDefinition = "INTEGER")
   private int stock;
 }
