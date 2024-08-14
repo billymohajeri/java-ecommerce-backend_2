@@ -67,7 +67,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<GlobalResponse<CustomErrorVm>> handleCustomException(CustomException exception) {
         CustomErrorVm errorVm = new CustomErrorVm(

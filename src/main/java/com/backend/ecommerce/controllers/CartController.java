@@ -18,7 +18,7 @@ public class CartController {
     @Autowired
     CartServiceImpl cartServiceImpl;
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<GlobalResponse<Cart>> createCart(@RequestBody CartDto cartDto) {
         return ResponseEntity.ok(new GlobalResponse<>(cartServiceImpl.create(cartDto), null));
     }
