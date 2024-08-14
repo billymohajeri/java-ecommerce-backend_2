@@ -1,6 +1,8 @@
 package com.backend.ecommerce.services;
 
+import com.backend.ecommerce.entities.Order;
 import com.backend.ecommerce.entities.Payment;
+import com.backend.ecommerce.repositories.OrderJpaRepo;
 import com.backend.ecommerce.repositories.PaymentJpaRepo;
 import com.backend.ecommerce.dtos.payment.PaymentCreateDto;
 import com.backend.ecommerce.dtos.payment.PaymentResponseDto;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -21,10 +24,23 @@ public class PaymentServiceImpl implements PaymentService {
     private PaymentJpaRepo paymentJpaRepo;
     @Autowired
     private PaymentMapper paymentMapper;
+    @Autowired
+    private OrderJpaRepo orderJpaRepo;
 
     @Override
     public PaymentResponseDto processPayment(PaymentCreateDto paymentCreateDto) {
+
+        boolean paymentExists = paymentJpaRepo.existsByOrderId(paymentCreateDto.orderId());
+        if (paymentExists){
+            throw new IllegalArgumentException("Payment already exists for this order");
+        }
+
+        Order order = orderJpaRepo.findById(paymentCreateDto.orderId())
+                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+
         Payment payment = paymentMapper.toPayment(paymentCreateDto);
+        payment.setOrder(order);
+
         Payment savedPayment = paymentJpaRepo.save(payment);
         return paymentMapper.toPaymentResponseDto(savedPayment);
     }

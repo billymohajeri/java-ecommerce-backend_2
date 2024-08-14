@@ -1,6 +1,6 @@
 package com.backend.ecommerce.services;
 
-import com.backend.ecommerce.dtos.order.OrderDto;
+import com.backend.ecommerce.dtos.order.OrderCreateDto;
 import com.backend.ecommerce.dtos.order.OrderUpdateDto;
 import com.backend.ecommerce.entities.Order;
 import com.backend.ecommerce.mappers.OrderMapper;
@@ -23,22 +23,22 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderMapper orderMapper;
 
-    public OrderDto createOrder(OrderDto orderDto) {
+    public OrderCreateDto createOrder(OrderCreateDto orderDto) {
         Order order = orderMapper.toOrder(orderDto);
         Order savedOrder = orderJpaRepo.save(order);
         return orderMapper.toOrderDto(savedOrder);
     }
 
-    public Optional<OrderDto> getOrderById(UUID id){
+    public Optional<OrderCreateDto> getOrderById(UUID id){
         return orderJpaRepo.findById(id).map(orderMapper::toOrderDto);
     }
 
-    public List<OrderDto> getAllOrders(){
+    public List<OrderCreateDto> getAllOrders(){
         List<Order> orders = orderJpaRepo.findAll();
         return orderMapper.toOrderDtos(orders);
     }
 
-    public OrderDto updateOrder(UUID id, OrderUpdateDto orderDto){
+    public OrderCreateDto updateOrder(UUID id, OrderUpdateDto orderDto){
         return orderJpaRepo.findById(id)
                 .map(order -> {
                     order.setAddress(orderDto.address());

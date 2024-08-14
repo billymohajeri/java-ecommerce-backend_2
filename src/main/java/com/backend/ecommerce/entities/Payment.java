@@ -23,9 +23,9 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotNull(message = "Order ID cannot be null")
-    @Column(name = "order_id", nullable = false)
-    private UUID orderId;
+    @OneToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
     @DecimalMin(value = "0.0", inclusive = false, message = "Amount must be greater than zero")
     @NotNull(message = "Amount cannot be null")

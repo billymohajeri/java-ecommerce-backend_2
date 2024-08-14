@@ -46,4 +46,7 @@ public class Order {
     @Size(max = 255, message = "Address should not exceed 255 characters")
     @Column(name = "address")
     private String address;
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
 }
