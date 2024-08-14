@@ -1,5 +1,6 @@
 package com.backend.ecommerce.services;
 
+import com.backend.ecommerce.dtos.payment.PaymentUpdateDto;
 import com.backend.ecommerce.entities.Order;
 import com.backend.ecommerce.entities.Payment;
 import com.backend.ecommerce.repositories.OrderJpaRepo;
@@ -56,5 +57,23 @@ public class PaymentServiceImpl implements PaymentService {
         return payments.stream()
                 .map(paymentMapper::toPaymentResponseDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public PaymentResponseDto updatePaymentDetails(UUID paymentId, PaymentUpdateDto paymentUpdateDto){
+        Payment payment = paymentJpaRepo.findById(paymentId)
+                .orElseThrow(() -> new IllegalArgumentException("Payment not found."));
+        if (paymentUpdateDto.amount() != null){
+            payment.setAmount(paymentUpdateDto.amount());
+        }
+        if(paymentUpdateDto.method()!= null){
+            payment.setMethod(paymentUpdateDto.method());
+        }
+        if(paymentUpdateDto.status() != null){
+            payment.setStatus(paymentUpdateDto.status());
+        }
+
+        Payment updatedPayment = paymentJpaRepo.save(payment);
+        return paymentMapper.toPaymentResponseDto(updatedPayment);
     }
 }

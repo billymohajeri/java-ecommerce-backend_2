@@ -2,6 +2,7 @@ package com.backend.ecommerce.controllers;
 
 import com.backend.ecommerce.dtos.payment.PaymentCreateDto;
 import com.backend.ecommerce.dtos.payment.PaymentResponseDto;
+import com.backend.ecommerce.dtos.payment.PaymentUpdateDto;
 import com.backend.ecommerce.services.interfaces.PaymentService;
 import com.backend.ecommerce.shared.response.GlobalResponse;
 import jakarta.validation.Valid;
@@ -35,5 +36,11 @@ public class PaymentController {
     public ResponseEntity<GlobalResponse<List<PaymentResponseDto>>> getAllPayments() {
         List<PaymentResponseDto> payments = paymentService.getAllPayments();
         return ResponseEntity.ok(new GlobalResponse<>(payments, null));
+    }
+
+    @PutMapping("/{paymentId}")
+    public ResponseEntity<GlobalResponse<PaymentResponseDto>> updatePaymentDetails(@PathVariable UUID paymentId, @Valid @RequestBody PaymentUpdateDto paymentUpdateDto){
+        PaymentResponseDto response = paymentService.updatePaymentDetails(paymentId,paymentUpdateDto);
+        return ResponseEntity.ok(new GlobalResponse<>(response, null));
     }
 }
