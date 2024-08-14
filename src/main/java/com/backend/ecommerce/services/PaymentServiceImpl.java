@@ -9,6 +9,7 @@ import com.backend.ecommerce.dtos.payment.PaymentCreateDto;
 import com.backend.ecommerce.dtos.payment.PaymentResponseDto;
 import com.backend.ecommerce.services.interfaces.PaymentService;
 import com.backend.ecommerce.mappers.PaymentMapper;
+import com.backend.ecommerce.shared.exceptions.OrderAndPaymentExceptions;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,11 +33,11 @@ public class PaymentServiceImpl implements PaymentService {
 
         boolean paymentExists = paymentJpaRepo.existsByOrderId(paymentCreateDto.orderId());
         if (paymentExists){
-            throw new IllegalArgumentException("Payment already exists for this order");
+            throw new OrderAndPaymentExceptions.PaymentAlreadyExistsException();
         }
 
         Order order = orderJpaRepo.findById(paymentCreateDto.orderId())
-                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+                .orElseThrow(OrderAndPaymentExceptions.OrderNotFoundException::new);
 
         Payment payment = paymentMapper.toPayment(paymentCreateDto);
         payment.setOrder(order);
@@ -47,7 +48,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentResponseDto getPaymentDetails(UUID paymentId) {
-        Payment payment = paymentJpaRepo.findById(paymentId).orElseThrow(() -> new IllegalArgumentException("Payment Not Found! "));
+        Payment payment = paymentJpaRepo.findById(paymentId).orElseThrow(OrderAndPaymentExceptions.PaymentNotFoundException::new);
         return paymentMapper.toPaymentResponseDto(payment);
     }
 
@@ -62,7 +63,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentResponseDto updatePaymentDetails(UUID paymentId, PaymentUpdateDto paymentUpdateDto){
         Payment payment = paymentJpaRepo.findById(paymentId)
-                .orElseThrow(() -> new IllegalArgumentException("Payment not found."));
+                .orElseThrow(OrderAndPaymentExceptions.PaymentNotFoundException::new);
         if (paymentUpdateDto.amount() != null){
             payment.setAmount(paymentUpdateDto.amount());
         }

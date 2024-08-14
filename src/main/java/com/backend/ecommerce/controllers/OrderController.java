@@ -3,7 +3,7 @@ package com.backend.ecommerce.controllers;
 import com.backend.ecommerce.dtos.order.OrderCreateDto;
 import com.backend.ecommerce.dtos.order.OrderUpdateDto;
 import com.backend.ecommerce.services.interfaces.OrderService;
-import com.backend.ecommerce.shared.exceptions.CustomException;
+import com.backend.ecommerce.shared.exceptions.OrderAndPaymentExceptions;
 import com.backend.ecommerce.shared.response.GlobalResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class OrderController {
     public ResponseEntity<GlobalResponse<OrderCreateDto>> getOrderById(@PathVariable UUID id){
         Optional<OrderCreateDto> order = orderService.getOrderById(id);
         return order.map(dto -> ResponseEntity.ok(new GlobalResponse<>(dto, null)))
-                .orElseThrow(() -> new CustomException("Order not found! ", HttpStatus.NOT_FOUND.value()));
+                .orElseThrow(OrderAndPaymentExceptions.OrderNotFoundException::new);
     }
 
     @GetMapping
@@ -50,7 +50,7 @@ public class OrderController {
             GlobalResponse<OrderCreateDto> response = new GlobalResponse<>(updatedOrder, null);
             return ResponseEntity.ok(response);
         }catch (RuntimeException e){
-            throw new CustomException("Order not found", HttpStatus.NOT_FOUND.value());
+            throw new OrderAndPaymentExceptions.OrderNotFoundException();
         }
     }
 
