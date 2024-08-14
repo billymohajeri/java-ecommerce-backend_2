@@ -6,6 +6,7 @@ import com.backend.ecommerce.shared.filters.AuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,17 +31,25 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     return http
             .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(req ->
-                    req.requestMatchers(
-                                    "/api/v1/users/login",
-                                    "/api/v1/users/register",
-                                    "/api/v1/carts",
-                                    "/api/v1/reviews/product/*"
-                            )
-                            .permitAll()
-                            .requestMatchers("/api/v1/users/*", "/api/v1/reviews/*").hasAuthority(AuthenticationRole.ADMIN.name())
-                            .anyRequest()
-                            .authenticated())
+            .authorizeHttpRequests(req -> req
+                    // Public access to GET requests for /api/v1/products
+                    .requestMatchers(HttpMethod.GET, "/api/v1/products", "/api/v1/products/*").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/v1/products").hasAuthority(AuthenticationRole.ADMIN.name())
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/products").hasAuthority(AuthenticationRole.ADMIN.name())
+                    .requestMatchers(HttpMethod.DELETE, "/api/v1/products").hasAuthority(AuthenticationRole.ADMIN.name())
+                    .requestMatchers(HttpMethod.PATCH, "/api/v1/products").hasAuthority(AuthenticationRole.ADMIN.name())
+
+                    .requestMatchers(
+                            "/api/v1/users/login",
+                            "/api/v1/users/register",
+                            "/api/v1/carts",
+                            "/api/v1/reviews/product/*"
+                    )
+                    .permitAll()
+                    .requestMatchers("/api/v1/users/*",
+                            "/api/v1/reviews/*").hasAuthority(AuthenticationRole.ADMIN.name())
+                    .anyRequest()
+                    .authenticated())
             .userDetailsService(userDetailsService)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
