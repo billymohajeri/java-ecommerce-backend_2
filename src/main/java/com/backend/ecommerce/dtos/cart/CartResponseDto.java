@@ -1,12 +1,15 @@
 package com.backend.ecommerce.dtos.cart;
 
-import com.backend.ecommerce.entities.Product;
-import com.backend.ecommerce.entities.User;
-import jakarta.validation.constraints.NotBlank;
+import com.backend.ecommerce.dtos.user.UserDto;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.UUID;
 
-//TODO: cartDto will have products as well
-public record CartResponseDto(UUID cartId, User user, List<Product> products) {
+import static org.hibernate.validator.internal.util.CollectionHelper.newHashSet;
+
+
+public record CartResponseDto(UUID cartId, UserDto user, HashSet<CartProductResponseDto> products) {
+    public CartResponseDto() {
+        this(null, null, newHashSet());
+    }
 }

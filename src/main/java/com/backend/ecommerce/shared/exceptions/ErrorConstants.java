@@ -14,6 +14,7 @@ public class ErrorConstants {
     public static final String PASSWORD_NOT_EMPTY = "Password cannot be empty";
     public static final String RESOURCE_NOT_FOUND = "Resource not found";
     public static final String INVALID_PHONE = "Invalid Phone Number";
+    public static final String INVALID_PASSWORD = "Invalid Password";
 
     public static final String PRODUCT_DOES_NOT_EXIST = "This product does not exist";
   }

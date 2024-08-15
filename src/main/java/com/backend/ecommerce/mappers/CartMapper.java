@@ -1,6 +1,5 @@
 package com.backend.ecommerce.mappers;
 
-import com.backend.ecommerce.dtos.cart.CartResponseDto;
 import com.backend.ecommerce.entities.Cart;
 import com.backend.ecommerce.dtos.cart.CartDto;
 import org.mapstruct.InjectionStrategy;
@@ -15,7 +14,4 @@ public interface CartMapper {
 
     @Mapping(target = "userId", source = "user.id")
     CartDto toCartDto(Cart source);
-
-    CartResponseDto toCartResponseDto(Cart source);
-
 }
