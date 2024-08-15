@@ -22,11 +22,13 @@ public class Review {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @Column(name = "product_id", nullable = false, columnDefinition = "UUID")
-  private UUID productId;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "product_id", nullable = false)
+  private Product product;
 
-  @Column(name = "user_id", nullable = false, columnDefinition = "UUID")
-  private UUID userId;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
 
   @Column(name = "review", nullable = false, columnDefinition = "TEXT")
   private String review;
