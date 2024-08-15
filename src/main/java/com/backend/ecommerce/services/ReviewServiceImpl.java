@@ -42,8 +42,6 @@ public class ReviewServiceImpl implements ReviewService {
       existingReviewDto.setReview(newReviewDto.review());
       existingReviewDto.setRating(newReviewDto.rating());
       existingReviewDto.setImages(newReviewDto.images());
-
-//      Review updatedReview = reviewMapper.toReview(existingReviewDto);
       Review savedReview = reviewJpaRepo.save(existingReviewDto);
       return reviewMapper.toReviewDto(savedReview);
     }).orElseThrow(() -> new NoSuchElementException(

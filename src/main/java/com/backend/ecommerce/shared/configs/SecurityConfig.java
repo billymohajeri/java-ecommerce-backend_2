@@ -32,13 +32,11 @@ public class SecurityConfig {
     return http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(req -> req
-                    // Public access to GET requests for /api/v1/products
-                    .requestMatchers(HttpMethod.GET, "/api/v1/products", "/api/v1/products/*").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/v1/products").hasAuthority(AuthenticationRole.ADMIN.name())
                     .requestMatchers(HttpMethod.PUT, "/api/v1/products").hasAuthority(AuthenticationRole.ADMIN.name())
                     .requestMatchers(HttpMethod.DELETE, "/api/v1/products").hasAuthority(AuthenticationRole.ADMIN.name())
                     .requestMatchers(HttpMethod.PATCH, "/api/v1/products").hasAuthority(AuthenticationRole.ADMIN.name())
-
+                    .requestMatchers(HttpMethod.GET, "/api/v1/products", "/api/v1/products/*").permitAll()
                     .requestMatchers(
                             "/api/v1/users/login",
                             "/api/v1/users/register",
@@ -46,8 +44,11 @@ public class SecurityConfig {
                             "/api/v1/reviews/product/*"
                     )
                     .permitAll()
-                    .requestMatchers("/api/v1/users/*",
-                            "/api/v1/reviews/*").hasAuthority(AuthenticationRole.ADMIN.name())
+                    .requestMatchers(
+                            "/api/v1/users/*",
+                            "/api/v1/reviews/*",
+                            "/api/v1/products"
+                    ).hasAuthority(AuthenticationRole.ADMIN.name())
                     .anyRequest()
                     .authenticated())
             .userDetailsService(userDetailsService)
