@@ -3,7 +3,6 @@ package com.backend.ecommerce.controllers;
 import com.backend.ecommerce.dtos.order.OrderCreateDto;
 import com.backend.ecommerce.dtos.order.OrderUpdateDto;
 import com.backend.ecommerce.services.interfaces.OrderService;
-import com.backend.ecommerce.shared.exceptions.OrderAndPaymentExceptions;
 import com.backend.ecommerce.shared.response.GlobalResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +31,7 @@ public class OrderController {
     @GetMapping("/{id}")
     public ResponseEntity<GlobalResponse<OrderCreateDto>> getOrderById(@PathVariable UUID id){
         Optional<OrderCreateDto> order = orderService.getOrderById(id);
-        return order.map(dto -> ResponseEntity.ok(new GlobalResponse<>(dto, null)))
-                .orElseThrow(OrderAndPaymentExceptions.OrderNotFoundException::new);
+        return order.map(dto -> ResponseEntity.ok(new GlobalResponse<>(dto, null))).orElseThrow();
     }
 
     @GetMapping
@@ -45,19 +43,15 @@ public class OrderController {
 
     @PutMapping("/{id}")
     public ResponseEntity<GlobalResponse<OrderCreateDto>> updateOrder(@PathVariable UUID id, @Valid @RequestBody OrderUpdateDto orderDto){
-        try{
-            OrderCreateDto updatedOrder = orderService.updateOrder(id, orderDto);
-            GlobalResponse<OrderCreateDto> response = new GlobalResponse<>(updatedOrder, null);
-            return ResponseEntity.ok(response);
-        }catch (RuntimeException e){
-            throw new OrderAndPaymentExceptions.OrderNotFoundException();
-        }
+        OrderCreateDto updatedOrder = orderService.updateOrder(id, orderDto);
+        GlobalResponse<OrderCreateDto> response = new GlobalResponse<>(updatedOrder, null);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<GlobalResponse<OrderCreateDto>> deleteOrder(@PathVariable UUID id){
-        orderService.deleteOrder(id);
-        GlobalResponse<Void> response = new GlobalResponse<>(null, null);
-        return ResponseEntity.noContent().build();
+        OrderCreateDto deletedOrder = orderService.deleteOrder(id);
+        GlobalResponse<OrderCreateDto> response = new GlobalResponse<>(deletedOrder, null);
+        return ResponseEntity.ok(response);
     }
 }

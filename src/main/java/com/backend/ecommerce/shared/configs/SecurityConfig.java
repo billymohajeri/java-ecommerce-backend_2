@@ -34,7 +34,11 @@ public class SecurityConfig {
                         req.requestMatchers(
                                         "/api/v1/users/login",
                                         "/api/v1/users/register",
-                                        "/api/v1/carts")
+                                        "/api/v1/carts",
+                                        "/api/v1/orders",
+                                        "/api/v1/orders/*",
+                                        "/api/v1/payments",
+                                        "/api/v1/payments/*")
                                 .permitAll()
                                 .requestMatchers("/api/v1/users/*").hasAuthority(AuthenticationRole.ADMIN.name())
                                 .anyRequest()

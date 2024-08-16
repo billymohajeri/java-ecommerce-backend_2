@@ -6,21 +6,22 @@ import com.backend.ecommerce.entities.Order;
 import com.backend.ecommerce.mappers.OrderMapper;
 import com.backend.ecommerce.repositories.OrderJpaRepo;
 import com.backend.ecommerce.services.interfaces.OrderService;
-import com.backend.ecommerce.shared.exceptions.OrderAndPaymentExceptions;
+import com.backend.ecommerce.shared.exceptions.ErrorConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class OrderServiceImpl implements OrderService {
     @Autowired
-    OrderJpaRepo orderJpaRepo;
+    private OrderJpaRepo orderJpaRepo;
 
     @Autowired
-    OrderMapper orderMapper;
+    private OrderMapper orderMapper;
 
     public OrderCreateDto createOrder(OrderCreateDto orderDto) {
         Order order = orderMapper.toOrder(orderDto);
@@ -29,7 +30,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public Optional<OrderCreateDto> getOrderById(UUID id){
-        return orderJpaRepo.findById(id).map(orderMapper::toOrderDto);
+        Optional<Order> order = orderJpaRepo.findById(id);
+        return order.ofNullable(order.map(value -> orderMapper.toOrderDto(value))
+                .orElseThrow(() -> new NoSuchElementException(ErrorConstants.ErrorMessage.ORDER_DOES_NOT_EXIST)));
     }
 
     public List<OrderCreateDto> getAllOrders(){
@@ -45,16 +48,16 @@ public class OrderServiceImpl implements OrderService {
                     order.setStatus(orderDto.status());
                     Order updatedOrder = orderJpaRepo.save(order);
                     return orderMapper.toOrderDto(updatedOrder);
-                }).orElseThrow(OrderAndPaymentExceptions.OrderNotFoundException::new);
+                }).orElseThrow(() -> new NoSuchElementException(ErrorConstants.ErrorMessage.ORDER_DOES_NOT_EXIST));
     }
 
-    public void deleteOrder(UUID id){
-        Optional<Order> deletedOrder = orderJpaRepo.findById(id);
-        if(deletedOrder.isPresent()){
-            orderJpaRepo.deleteById(id);
-        }else{
-            throw new OrderAndPaymentExceptions.OrderNotFoundException();
-        }
+    public OrderCreateDto deleteOrder(UUID id){
+        Order order = orderJpaRepo.findById(id)
+                .orElseThrow(() -> new NoSuchElementException(ErrorConstants.ErrorMessage.ORDER_DOES_NOT_EXIST));
+
+        orderJpaRepo.deleteById(id);
+
+        return orderMapper.toOrderDto(order);
     }
 
 }

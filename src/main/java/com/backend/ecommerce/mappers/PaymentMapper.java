@@ -7,10 +7,14 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.FIELD)
 public interface PaymentMapper {
     @Mapping(target = "order", ignore = true)
     Payment toPayment(PaymentCreateDto paymentCreateDto);
     @Mapping(source = "order.id", target = "orderId")
     PaymentResponseDto toPaymentResponseDto(Payment paymentEntity);
+
+    List<PaymentResponseDto> toPaymentResponseDtoList(List<Payment> payments);
 }

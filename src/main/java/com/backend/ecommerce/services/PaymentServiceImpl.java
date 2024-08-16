@@ -9,12 +9,13 @@ import com.backend.ecommerce.dtos.payment.PaymentCreateDto;
 import com.backend.ecommerce.dtos.payment.PaymentResponseDto;
 import com.backend.ecommerce.services.interfaces.PaymentService;
 import com.backend.ecommerce.mappers.PaymentMapper;
-import com.backend.ecommerce.shared.exceptions.OrderAndPaymentExceptions;
+import com.backend.ecommerce.shared.exceptions.ErrorConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -31,13 +32,13 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentResponseDto processPayment(PaymentCreateDto paymentCreateDto) {
 
-        boolean paymentExists = paymentJpaRepo.existsByOrderId(paymentCreateDto.orderId());
+        boolean paymentExists = paymentJpaRepo.existsByOrder_Id(paymentCreateDto.orderId());
         if (paymentExists){
-            throw new OrderAndPaymentExceptions.PaymentAlreadyExistsException();
+            throw new NoSuchElementException(ErrorConstants.ErrorMessage.PAYMENT_ALREADY_EXIST);
         }
 
         Order order = orderJpaRepo.findById(paymentCreateDto.orderId())
-                .orElseThrow(OrderAndPaymentExceptions.OrderNotFoundException::new);
+                .orElseThrow(() -> new NoSuchElementException(ErrorConstants.ErrorMessage.ORDER_DOES_NOT_EXIST));
 
         Payment payment = paymentMapper.toPayment(paymentCreateDto);
         payment.setOrder(order);
@@ -48,22 +49,20 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentResponseDto getPaymentDetails(UUID paymentId) {
-        Payment payment = paymentJpaRepo.findById(paymentId).orElseThrow(OrderAndPaymentExceptions.PaymentNotFoundException::new);
+        Payment payment = paymentJpaRepo.findById(paymentId).orElseThrow(() -> new NoSuchElementException(ErrorConstants.ErrorMessage.PAYMENT_DOES_NOT_EXIST));
         return paymentMapper.toPaymentResponseDto(payment);
     }
 
     @Override
     public List<PaymentResponseDto> getAllPayments() {
         List<Payment> payments = paymentJpaRepo.findAll();
-        return payments.stream()
-                .map(paymentMapper::toPaymentResponseDto)
-                .collect(Collectors.toList());
+        return paymentMapper.toPaymentResponseDtoList(payments);
     }
 
     @Override
     public PaymentResponseDto updatePaymentDetails(UUID paymentId, PaymentUpdateDto paymentUpdateDto){
         Payment payment = paymentJpaRepo.findById(paymentId)
-                .orElseThrow(OrderAndPaymentExceptions.PaymentNotFoundException::new);
+                .orElseThrow(() -> new NoSuchElementException(ErrorConstants.ErrorMessage.PAYMENT_DOES_NOT_EXIST));
         if (paymentUpdateDto.amount() != null){
             payment.setAmount(paymentUpdateDto.amount());
         }
