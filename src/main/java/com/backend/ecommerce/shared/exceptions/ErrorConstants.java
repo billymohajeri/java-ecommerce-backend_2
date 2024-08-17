@@ -19,6 +19,8 @@ public class ErrorConstants {
 
     public static final String PRODUCT_DOES_NOT_EXIST = "This product does not exist";
 
+    public static final String REVIEW_DOES_NOT_EXIST = "This review does not exist";
+
     public static final String ORDER_DOES_NOT_EXIST = "Order does not exist.";
     public static final String ORDER_DATE_DOES_NOT_EXIST = "Date and time are required";
     public static final String ORDER_STATUS_DOES_NOT_EXIST = "Order status is required";
