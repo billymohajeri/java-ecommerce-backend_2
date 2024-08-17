@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ErrorConstants {
   public static class ErrorMessage {
+
+    public static final String ACCESS_DENIED = "You do not have the permission to access this resource";
+
     public static final String USER_DOES_NOT_EXIST = "This user does not exist";
     public static final String USER_ALREADY_PRESENT = "This user is already present";
     public static final String PHONE_ALREADY_PRESENT = "This email already exists";
