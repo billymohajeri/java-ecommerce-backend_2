@@ -35,7 +35,6 @@ public class UserServiceImpl implements UserService {
     public UserLoginResponseDto loginUser(UserLoginDto userLoginDTO) {
         String token = authService.authenticate(userLoginDTO);
         User user = userJpaRepo.findByEmail(userLoginDTO.email()).orElseThrow();
-
         return new UserLoginResponseDto(token, userMapper.toUserDto(user));
  }
 

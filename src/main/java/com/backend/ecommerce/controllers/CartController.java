@@ -1,7 +1,6 @@
 package com.backend.ecommerce.controllers;
 
 import com.backend.ecommerce.dtos.cart.CartResponseDto;
-import com.backend.ecommerce.entities.Cart;
 import com.backend.ecommerce.services.CartServiceImpl;
 import com.backend.ecommerce.dtos.cart.CartDto;
 import com.backend.ecommerce.shared.response.GlobalResponse;
@@ -16,16 +15,16 @@ import java.util.UUID;
 public class CartController {
 
     @Autowired
-    CartServiceImpl cartServiceImpl;
+    private CartServiceImpl cartService;
 
     @PostMapping
-    public ResponseEntity<GlobalResponse<Cart>> createCart(@RequestBody CartDto cartDto) {
-        return ResponseEntity.ok(new GlobalResponse<>(cartServiceImpl.create(cartDto), null));
+    public ResponseEntity<GlobalResponse<CartResponseDto>> addProductToCart(@RequestBody CartDto cartDto) {
+        return ResponseEntity.ok(new GlobalResponse<>(cartService.addProductToCart(cartDto), null));
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<GlobalResponse<CartResponseDto>> getCartByUserId(@PathVariable UUID userId) {
-        CartResponseDto cartDto = cartServiceImpl.getCartByUserId(userId);
+        CartResponseDto cartDto = cartService.getCartByUserId(userId);
         return ResponseEntity.ok(new GlobalResponse<>(cartDto, null));
     }
 
