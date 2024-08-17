@@ -8,5 +8,5 @@ import org.springframework.data.repository.query.Param;
 import java.util.UUID;
 
 public interface PaymentJpaRepo extends JpaRepository<Payment, UUID> {
-    boolean existsByOrder_Id(UUID orderId);
+    boolean existsByOrderId(UUID orderId);
 }

@@ -32,7 +32,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentResponseDto processPayment(PaymentCreateDto paymentCreateDto) {
 
-        boolean paymentExists = paymentJpaRepo.existsByOrder_Id(paymentCreateDto.orderId());
+        boolean paymentExists = paymentJpaRepo.existsByOrderId(paymentCreateDto.orderId());
         if (paymentExists){
             throw new NoSuchElementException(ErrorConstants.ErrorMessage.PAYMENT_ALREADY_EXIST);
         }
