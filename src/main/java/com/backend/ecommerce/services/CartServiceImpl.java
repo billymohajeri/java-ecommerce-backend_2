@@ -22,23 +22,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CartServiceImpl implements CartService {
     @Autowired
-    CartMapper cartMapper;
+    private CartMapper cartMapper;
     @Autowired
-    CartJpaRepo cartJpaRepo;
+    private CartJpaRepo cartJpaRepo;
     @Autowired
-    ProductJpaRepo productJpaRepo;
+    private ProductJpaRepo productJpaRepo;
     @Autowired
-    CartProductJpaRepo cartProductJpaRepo;
+    private CartProductJpaRepo cartProductJpaRepo;
     @Autowired
-    UserJpaRepo userJpaRepo;
+    private UserJpaRepo userJpaRepo;
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
     @Autowired
-    ProductMapper productMapper;
+    private ProductMapper productMapper;
 
     @Transactional
     public CartResponseDto addProductToCart(CartDto cartDto) {
@@ -67,11 +68,11 @@ public class CartServiceImpl implements CartService {
         Cart cart = cartJpaRepo.findByUserId(userId).orElseThrow(() -> new NoSuchElementException(ErrorConstants.ErrorMessage.RESOURCE_NOT_FOUND));
         UserDto userDto = userMapper.toUserDto(cart.getUser());
         List<CartProduct> cartProducts = cartProductJpaRepo.findAllByCartId(cart.getId());
-        HashSet<CartProductResponseDto> products = new HashSet<>();
-        cartProducts.forEach(cp ->
-                products.add(new CartProductResponseDto
-                        (productMapper.toProductDto(cp.getProduct()), cp.getQuantity())
-                ));
+        Set<CartProductResponseDto> products = cartProducts.stream()
+                .map(cp -> new CartProductResponseDto(
+                        productMapper.toProductDto(cp.getProduct()),
+                        cp.getQuantity()))
+                .collect(Collectors.toSet());
         return new CartResponseDto(cart.getId(), userDto, products);
     }
 }
