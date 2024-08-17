@@ -16,8 +16,6 @@ public class ErrorConstants {
     public static final String INVALID_PHONE = "Invalid Phone Number";
     public static final String INVALID_PASSWORD = "Invalid Password";
 
-    public static final String INVALID_PASSWORD = "Invalid Password";
-
     public static final String PRODUCT_DOES_NOT_EXIST = "This product does not exist";
 
     public static final String REVIEW_DOES_NOT_EXIST = "This review does not exist";
