@@ -1,7 +1,7 @@
 package com.backend.ecommerce.mappers;
 
+import com.backend.ecommerce.dtos.order.OrderCreateDto;
 import com.backend.ecommerce.entities.Order;
-import com.backend.ecommerce.dtos.OrderDto;
 import com.backend.ecommerce.shared.utilities.Constants;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -13,12 +13,12 @@ import java.util.List;
 public interface OrderMapper {
 
     @Mapping(source="dateTime", target="dateTime", dateFormat = Constants.SERVER_DATE_FORMAT)
-    Order toOrder(OrderDto source);
+    Order toOrder(OrderCreateDto source);
 
     @Mapping(source = "dateTime", target = "dateTime", dateFormat = Constants.SERVER_DATE_FORMAT)
-    OrderDto toOrderDto(Order source);
+    OrderCreateDto toOrderDto(Order source);
 
-    List<OrderDto> toOrderDtos(List<Order> orders);
+    List<OrderCreateDto> toOrderDtos(List<Order> orders);
 
-    List<Order> toOrders(List<OrderDto> orderDtos);
+    List<Order> toOrders(List<OrderCreateDto> orderDtos);
 }
