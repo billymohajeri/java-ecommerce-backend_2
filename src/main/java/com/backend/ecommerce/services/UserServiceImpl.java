@@ -33,10 +33,11 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     public UserLoginResponseDto loginUser(UserLoginDto userLoginDTO) {
+        User user = userJpaRepo.findByEmail(userLoginDTO.email())
+                .orElseThrow(() -> new NoSuchElementException(ErrorConstants.ErrorMessage.USER_DOES_NOT_EXIST));
         String token = authService.authenticate(userLoginDTO);
-        User user = userJpaRepo.findByEmail(userLoginDTO.email()).orElseThrow();
         return new UserLoginResponseDto(token, userMapper.toUserDto(user));
- }
+    }
 
     private boolean checkUserExists(UUID id) {
         if (id != null) {

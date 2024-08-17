@@ -5,10 +5,7 @@ import com.backend.ecommerce.shared.exceptions.ErrorConstants;
 import com.backend.ecommerce.shared.utilities.Constants;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-
-import java.util.UUID;
 
 public record UserCreateDto(
         @NotBlank String firstName,
@@ -31,6 +28,6 @@ public record UserCreateDto(
 
         @NotBlank String birthDate,
 
-        @NotNull AuthenticationRole role
+        AuthenticationRole role
 ) {
 }
