@@ -3,6 +3,7 @@ package com.backend.ecommerce.services;
 import com.backend.ecommerce.dtos.user.UserCreateDto;
 import com.backend.ecommerce.dtos.user.UserLoginDto;
 import com.backend.ecommerce.entities.User;
+import com.backend.ecommerce.entities.enums.AuthenticationRole;
 import com.backend.ecommerce.repositories.UserJpaRepo;
 import com.backend.ecommerce.shared.utilities.Constants;
 import com.backend.ecommerce.shared.utilities.JwtUtil;
@@ -35,7 +36,7 @@ public class AuthServiceImpl {
         user.setEmail(userCreateDto.email());
         user.setAddress(userCreateDto.address());
         user.setPhoneNumber(userCreateDto.phoneNumber());
-        user.setRole(userCreateDto.role());
+        user.setRole(AuthenticationRole.USER);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constants.SERVER_DATE_FORMAT);
         user.setBirthDate(LocalDate.parse(userCreateDto.birthDate(), formatter));
         user.setPassword(passwordEncoder.encode(userCreateDto.password()));

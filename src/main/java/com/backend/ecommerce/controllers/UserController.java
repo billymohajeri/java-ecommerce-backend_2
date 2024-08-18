@@ -38,6 +38,12 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity<GlobalResponse<UserDto>> getUserProfile() {
+        Optional<UserDto> userDto = userServiceImpl.getUserProfile();
+        return userDto.map(dto -> ResponseEntity.ok(new GlobalResponse<>(dto, null))).orElseThrow();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<GlobalResponse<UserDto>> getUserById(@PathVariable UUID id) {
         Optional<UserDto> userDto = userServiceImpl.getUserById(id);

@@ -11,6 +11,7 @@ import com.backend.ecommerce.services.interfaces.UserService;
 import com.backend.ecommerce.shared.exceptions.CustomException;
 import com.backend.ecommerce.shared.exceptions.ErrorConstants;
 import com.backend.ecommerce.shared.utilities.Constants;
+import com.backend.ecommerce.shared.utilities.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -33,10 +34,11 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     public UserLoginResponseDto loginUser(UserLoginDto userLoginDTO) {
+        User user = userJpaRepo.findByEmail(userLoginDTO.email())
+                .orElseThrow(() -> new NoSuchElementException(ErrorConstants.ErrorMessage.USER_DOES_NOT_EXIST));
         String token = authService.authenticate(userLoginDTO);
-        User user = userJpaRepo.findByEmail(userLoginDTO.email()).orElseThrow();
         return new UserLoginResponseDto(token, userMapper.toUserDto(user));
- }
+    }
 
     private boolean checkUserExists(UUID id) {
         if (id != null) {
@@ -114,6 +116,13 @@ public class UserServiceImpl implements UserService {
             userJpaRepo.delete(user);
             return dto;
         }).orElseThrow();
+    }
+
+    @Override
+    public Optional<UserDto> getUserProfile() {
+        String email = SecurityUtils.getCurrentUserLogin();
+        User user = userJpaRepo.findByEmail(email).orElseThrow(()->new NoSuchElementException(ErrorConstants.ErrorMessage.USER_DOES_NOT_EXIST));
+        return Optional.ofNullable(userMapper.toUserDto(user));
     }
 
     public void logoutUser() {

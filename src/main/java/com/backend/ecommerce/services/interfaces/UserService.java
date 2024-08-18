@@ -23,4 +23,6 @@ public interface UserService {
     Optional<UserDto> getUserById(UUID id);
 
     UserDto deleteUser(UUID id);
+
+    Optional<UserDto> getUserProfile();
 }
