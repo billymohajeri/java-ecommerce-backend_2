@@ -23,8 +23,9 @@ public class ProductController {
   }
 
   @GetMapping
-  public ResponseEntity<GlobalResponse<List<ProductDto>>> getAllProducts() {
-    List<ProductDto> products = productService.getAllProducts();
+  public ResponseEntity<GlobalResponse<List<ProductDto>>> getAllProducts(
+          @RequestParam(required = false) String search) {
+    List<ProductDto> products = productService.getAllProducts(search);
     GlobalResponse<List<ProductDto>> response = new GlobalResponse<>(products, null);
     return ResponseEntity.ok(response);
   }

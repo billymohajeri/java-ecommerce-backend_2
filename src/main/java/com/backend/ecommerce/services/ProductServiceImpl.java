@@ -28,8 +28,14 @@ public class ProductServiceImpl implements ProductService {
     return productMapper.toProductDto(savedProduct);
   }
 
-  public List<ProductDto> getAllProducts() {
-    List<Product> products = productJpaRepo.findAll();
+  public List<ProductDto> getAllProducts(String search) {
+    List<Product> products;
+
+    if (search != null && !search.isEmpty()) {
+      products = productJpaRepo.findByNameContainingIgnoreCase(search);
+    } else {
+      products = productJpaRepo.findAll();
+    }
     return productMapper.toProductDtos(products);
   }
 
