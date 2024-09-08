@@ -1,13 +1,18 @@
 package com.backend.ecommerce.dtos.cart;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
 public record CartDto(
-        @NotBlank UUID userId,
+        @NotNull
+        UUID userId,
 
-        @NotBlank UUID productId,
+        @NotNull
+        UUID productId,
 
-        @NotBlank int quantity) {
+        @Min(value = 0, message = "quantity can't be negative")
+        int quantity
+) {
 }

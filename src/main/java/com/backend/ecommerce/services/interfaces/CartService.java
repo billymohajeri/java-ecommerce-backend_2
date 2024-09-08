@@ -6,7 +6,9 @@ import com.backend.ecommerce.dtos.cart.CartResponseDto;
 import java.util.UUID;
 
 public interface CartService {
-    CartResponseDto addProductToCart(CartDto cartDto);
+  CartResponseDto addProductToCart(CartDto cartDto);
 
-    CartResponseDto getCartByUserId(UUID userId);
+  CartResponseDto getCartByUserId(UUID userId);
+
+  void deleteCartByUserId(UUID id);
 }

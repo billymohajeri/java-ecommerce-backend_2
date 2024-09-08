@@ -46,10 +46,11 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(req -> req
                     .requestMatchers(HttpMethod.GET, "/api/v1/products", "/api/v1/products/*").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/v1/orders").permitAll()
                     .requestMatchers(
                             "/api/v1/users/login",
                             "/api/v1/users/register",
-                            "/api/v1/carts", "/api/v1/orders",
+                            "/api/v1/carts",
                             "/api/v1/reviews/product/*"
                     )
                     .permitAll()
@@ -58,15 +59,47 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.PUT, "/api/v1/products").hasAuthority(AuthenticationRole.ADMIN.name())
                     .requestMatchers(HttpMethod.DELETE, "/api/v1/products").hasAuthority(AuthenticationRole.ADMIN.name())
                     .requestMatchers(HttpMethod.PATCH, "/api/v1/products").hasAuthority(AuthenticationRole.ADMIN.name())
+                    .requestMatchers(HttpMethod.POST, "/api/v1/products").hasAuthority(AuthenticationRole.ADMIN.name())
+
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/orders").hasAuthority(AuthenticationRole.ADMIN.name())
+                    .requestMatchers(HttpMethod.DELETE, "/api/v1/orders").hasAuthority(AuthenticationRole.ADMIN.name())
+                    .requestMatchers(HttpMethod.PATCH, "/api/v1/orders").hasAuthority(AuthenticationRole.ADMIN.name())
+                    .requestMatchers(HttpMethod.GET, "/api/v1/orders").hasAuthority(AuthenticationRole.ADMIN.name())
+//                    .requestMatchers(HttpMethod.POST, "/api/v1/orders").hasAuthority(AuthenticationRole.ADMIN.name())
+
+                    .requestMatchers(HttpMethod.POST, "/api/v1/orders/**").hasAuthority(AuthenticationRole.ADMIN.name())
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/orders/**").hasAuthority(AuthenticationRole.ADMIN.name())
+                    .requestMatchers(HttpMethod.DELETE, "/api/v1/orders/**").hasAuthority(AuthenticationRole.ADMIN.name())
+                    .requestMatchers(HttpMethod.PATCH, "/api/v1/orders/**").hasAuthority(AuthenticationRole.ADMIN.name())
+                    .requestMatchers(HttpMethod.GET, "/api/v1/orders/**").hasAuthority(AuthenticationRole.ADMIN.name())
+
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/payments/**").hasAuthority(AuthenticationRole.ADMIN.name())
+                    .requestMatchers(HttpMethod.DELETE, "/api/v1/payments/**").hasAuthority(AuthenticationRole.ADMIN.name())
+                    .requestMatchers(HttpMethod.PATCH, "/api/v1/payments/**").hasAuthority(AuthenticationRole.ADMIN.name())
+                    .requestMatchers(HttpMethod.GET, "/api/v1/payments/**").hasAuthority(AuthenticationRole.ADMIN.name())
+
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/payments").hasAuthority(AuthenticationRole.ADMIN.name())
+                    .requestMatchers(HttpMethod.DELETE, "/api/v1/payments").hasAuthority(AuthenticationRole.ADMIN.name())
+                    .requestMatchers(HttpMethod.PATCH, "/api/v1/payments").hasAuthority(AuthenticationRole.ADMIN.name())
+                    .requestMatchers(HttpMethod.GET, "/api/v1/payments").hasAuthority(AuthenticationRole.ADMIN.name())
+
                     .requestMatchers("/api/v1/users/profile").hasAnyAuthority(AuthenticationRole.ADMIN.name(), AuthenticationRole.USER.name())
+                    .requestMatchers("/api/v1/users/**").hasAnyAuthority(AuthenticationRole.ADMIN.name(), AuthenticationRole.USER.name())
                     .requestMatchers(
+                            "/api/v1/users",
                             "/api/v1/users/**",
-                            "/api/v1/reviews/**",
-                            "/api/v1/products"
+                            "/api/v1/reviews/**"
+//                            "/api/v1/products",
+//                            "/api/v1/products/**"
+//                            "/api/v1/payments",
+//                            "/api/v1/payments/**"
+//                            "/api/v1/orders",
+//                            "/api/v1/orders/**"
+
                     ).hasAuthority(AuthenticationRole.ADMIN.name())
                     .requestMatchers(
-                            "/api/v1/orders",
-                            "/api/v1/orders/**",
+//                            "/api/v1/orders",
+//                            "/api/v1/orders/**",
                             "/api/v1/payments",
                             "/api/v1/payments/**").hasAuthority(AuthenticationRole.USER.name())
                     .anyRequest()
