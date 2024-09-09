@@ -42,6 +42,7 @@ the [front-end repository](https://github.com/billymohajeri/java_frontend.git).
     <li><a href="https://www.typescriptlang.org/">TypeScript</a></li>
     <li><a href="https://ui.shadcn.com/">shadcn/ui</a></li>
     <li><a href="https://tanstack.com/">TanStack</a></li>
+    <li><a href="https://tailwindui.com/">Tailwind CSS</a></li>
 </ul>
 
 <summary>Server:</summary>
