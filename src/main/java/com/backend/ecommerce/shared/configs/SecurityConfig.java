@@ -37,7 +37,7 @@ public class SecurityConfig {
     return http
             .cors(cors -> cors.configurationSource(request -> {
               CorsConfiguration config = new CorsConfiguration();
-              config.setAllowedOrigins(List.of("http://localhost:3000"));
+              config.setAllowedOrigins(List.of("http://localhost:3000", "https://fs18-java-frontend-two.vercel.app/"));
               config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
               config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
               return config;
